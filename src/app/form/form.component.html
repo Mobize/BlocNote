@@ -1,0 +1,110 @@
+<div class="container mt-15">
+    <mat-tab-group>
+      <mat-tab label="Méthode Template">
+        <div class="row">
+          <div class="col-md-8">
+            <mat-card class="mat-card">
+              <p class="mb5">Importer FormsModule dans AppModule</p>
+              <div class="code" [innerHTML]="importModule | keepHtml">
+                {{importModule}}
+              </div>
+            </mat-card>
+            <mat-card class="mat-card">
+              <p class="mb5">Importer NgForm dans le component</p>
+              <div class="code" [innerHTML]="importComponent | keepHtml">
+                {{importComponent}}
+              </div>
+            </mat-card>
+            <mat-card>
+              <mat-tab-group>
+                <mat-tab label="HTML">
+                  <!-- // Code -->
+                  <textarea class="code" readonly="readonly" style="border: none; width: 100%; height:580px; padding-top: 15px;">
+                    <div class="row">
+                      <div class="col-sm-8 col-sm-offset-2">
+                        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+                            <div class="form-group">
+                              <label for="name">
+                                Nom de l'appareil
+                              </label>
+                              <input type="text" id="name" class="form-control" name="name" ngModel>
+                            </div>
+                            <div class="form-group">
+                              <label for="status">
+                                État de l'appareil
+                              </label>
+                              <select id="status" class="form-control" name="status" ngModel>
+                                <option value="allumé">Allumé</option>
+                                <option value="éteint">Éteint</option>
+                              </select>
+                            </div>
+                          <button class="btn btn-primary" type="submit">Enregistrer</button>
+                        </form>
+                      </div>
+                    </div>
+                </textarea>
+                <!-- // Fin code -->
+                </mat-tab>
+                <mat-tab label="Typescript">
+                    <textarea class="code" readonly="readonly" style="border: none; width: 100%; height:580px; padding-top: 15px;">
+                      import { Component, OnInit } from '@angular/core';
+                      import { NgForm } from '@angular/forms';
+
+                      @Component({
+                        selector: 'app-form',
+                        templateUrl: './form.component.html',
+                        styleUrls: ['./form.component.css']
+                      })
+                      export class FormComponent implements OnInit {
+
+                        name: string;
+                        status: string;
+
+                        constructor() { }
+
+                        onSubmit(form: NgForm) {
+                          this.name = form.value.name;
+                          this.status = form.value.status;
+                        }
+                      }
+                    </textarea>
+                </mat-tab>
+              </mat-tab-group>
+            </mat-card>
+            <mat-card class="mat-card">
+                <p class="mb5">Résultat</p>
+                <mat-divider></mat-divider>
+                <div class="row mt-10">
+                  <div class="col-sm-8 col-sm-offset-2">
+                    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+                        <div class="form-group">
+                          <label for="name">
+                            Nom de l'appareil
+                          </label>
+                          <input type="text" id="name" class="form-control" name="name" ngModel>
+                        </div>
+                        <div class="form-group">
+                          <label for="status">
+                            État de l'appareil
+                          </label>
+                          <select id="status" class="form-control" name="status" ngModel>
+                            <option value="allumé">Allumé</option>
+                            <option value="éteint">Éteint</option>
+                          </select>
+                        </div>
+                      <button class="btn btn-primary" type="submit">Enregistrer</button>
+                    </form>
+                    <div *ngIf="status || name">
+                      <p style="margin-top: 20px;">Nom : {{name}}</p>
+                      <p>Statut : {{status}}</p>
+                    </div>
+                  </div>
+                </div>
+              </mat-card>
+          </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Second"> Content 2 </mat-tab>
+      </mat-tab-group>
+
+</div>

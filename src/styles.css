@@ -1,1 +1,65 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Raleway', sans-serif; }
+
+.h2 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.mt-15 {
+  margin-top: 15px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.pl-15 {
+  padding-left: 15px;
+}
+
+a.link:hover {
+  text-decoration: none;
+}
+
+.link_h2:hover {
+  text-decoration: none;
+}
+
+.mat-list-item-content:hover {
+  color:grey;
+}
+
+.code {
+  background: #283142;
+  color: #f0a2ff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.mat-card {
+  margin-bottom: 20px;;
+}
+
+.active {
+  color: red;
+}
+
+
+
+
