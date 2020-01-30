@@ -58,7 +58,11 @@ export class ItemService {
       (resolve, reject) => {
         firebase.database().ref('/sections/' + id).once('value').then(
           (data: DataSnapshot) => {
+            data.forEach(function(childSnapshot){
+              console.log(childSnapshot.child('items').child(data.key))
+            })
             resolve(data.val());
+            // console.log(data.val().items)
           }, (error) => {
             reject(error);
           }
