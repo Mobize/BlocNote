@@ -48,8 +48,8 @@ export class ItemService {
     firebase.database().ref('/sections/' + sectionId + '/items')
     .on('value', (data: DataSnapshot) => {
       this.items = data.val() ? data.val() : [];
+      console.log(this.items);
       this.emitItems();
-      // console.log(this.items);
     });
   }
 

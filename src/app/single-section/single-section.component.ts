@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 export class SingleSectionComponent implements OnInit {
 
   section: Section;
-  items: Item[];
+  items;
   itemSubscription: Subscription;
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
@@ -21,13 +21,13 @@ export class SingleSectionComponent implements OnInit {
 
   ngOnInit() {
 
-    this.itemSubscription = this.itemService.itemSubject.subscribe(
-      (item: Item[]) => {
-        this.items = item;
-        console.log(this.items);
-      }
-    );
-    this.itemService.emitItems();
+    // this.itemSubscription = this.itemService.itemSubject.subscribe(
+    //   (item: Item[]) => {
+    //     this.items = item;
+    //     // console.log(this.items);
+    //   }
+    // );
+    // this.itemService.emitItems();
 
     this.section = new Section('');
 
@@ -36,6 +36,7 @@ export class SingleSectionComponent implements OnInit {
       this.itemService.getSingleSection(+id).then(
         (section: Section) => {
           this.section = section;
+          console.log(this.section)
         }
       );
     });
