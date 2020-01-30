@@ -1,0 +1,9 @@
+<div class="row row_section">
+  <div class="col-xs-12">
+    <h1>{{ section.title }}</h1>
+    <app-item-form></app-item-form>
+    <div *ngFor="let section of section.id; let i = index">
+      {{section}}
+    </div>
+  </div>
+</div>

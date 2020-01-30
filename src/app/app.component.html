@@ -1,23 +1,12 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav mode="side" opened class="sidenav-left">
-      <h2 class="h2"><a routerLink="/" class="link_h2">Angular Tips</a></h2>
-      <mat-list role="list" class="pl-15">
-        <a routerLink="/cmd" class="link">
-            <mat-list-item routerLinkActive="active" role="listitem">Commandes</mat-list-item>
-        </a>
-        <a routerLink="/form" class="link">
-            <mat-list-item role="listitem">Formulaires</mat-list-item>
-        </a>
-          <mat-list-item role="listitem">Observables</mat-list-item>
-          <mat-list-item role="listitem">Requete POST</mat-list-item>
-          <mat-list-item role="listitem">Authentification</mat-list-item>
-        </mat-list>
+ <mat-sidenav-container class="main_container">
+  <mat-sidenav class="sidenav_container" #sidenav mode="side" [(opened)]="opened">
+    <h2 class="h2"><a routerLink="/" class="link_h2">Bloc Note</a></h2>
+    <button mat-raised-button routerLink="add-section">Ajout Section</button>
+    <app-section-list></app-section-list>
   </mat-sidenav>
+
   <mat-sidenav-content>
+    <mat-icon (click)="sidenav.toggle()" class="open_nav_icon">reorder</mat-icon>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-
-
-

@@ -1,0 +1,20 @@
+<div class="row form_section">
+  <div class="col-md-12">
+    <h2>Nouvelle Item</h2>
+    <form [formGroup]="itemForm" (ngSubmit)="onSaveItem()">
+      <div class="form-group">
+        <label for="title">Titre</label>
+        <input type="text" id="title"
+               class="form-control" formControlName="title">
+      </div>
+      <div class="form-group">
+        <label for="title">Code</label>
+        <textarea  id="title"class="form-control" formControlName="code"></textarea>
+      </div>
+      <button class="btn btn-success" [disabled]="itemForm.invalid"
+              type="submit">Enregistrer
+      </button>
+
+    </form>
+  </div>
+</div>

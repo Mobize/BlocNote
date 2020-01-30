@@ -14,10 +14,17 @@ import { FormComponent } from './form/form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EscapeHtmlPipe } from './pipes/keep-html.pipe';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatIconModule} from '@angular/material/icon';
+import { SectionListComponent } from './section-list/section-list.component';
+import { SingleSectionComponent } from './single-section/single-section.component';
+import { SectionFormComponent } from './section-form/section-form.component';
+import { ItemFormComponent } from './item-form/item-form.component';
 
 const appRoutes: Routes = [
   {path: 'cmd', component: CmdComponent},
-  {path: 'form', component: FormComponent}
+  {path: 'form', component: FormComponent},
+  {path: 'add-section', component: SectionFormComponent},
+  {path: 'sections/:id', component: SingleSectionComponent}
 ];
 
 @NgModule({
@@ -25,7 +32,11 @@ const appRoutes: Routes = [
     AppComponent,
     CmdComponent,
     FormComponent,
-    EscapeHtmlPipe
+    EscapeHtmlPipe,
+    SectionListComponent,
+    SingleSectionComponent,
+    SectionFormComponent,
+    ItemFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,6 +49,7 @@ const appRoutes: Routes = [
     FormsModule,
     MatDividerModule,
     ReactiveFormsModule,
+    MatIconModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

@@ -1,0 +1,12 @@
+<div class="row row_section">
+  <div class="col-xs-12 list_section">
+    <mat-nav-list>
+      <mat-list-item *ngFor="let section of sections; let i = index">
+         <a matLine (click)="onViewSection(i)">{{ section.title }}</a>
+         <button mat-icon-button >
+            <mat-icon (click)="onDeleteSection(section)">delete_sweep</mat-icon>
+         </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</div>
