@@ -1,8 +1,6 @@
 export class Section {
   title: string;
-  items: [];
-  constructor(title,items?) {
+  constructor(title) {
     this.title = title;
-    this.items = items;
   }
 }

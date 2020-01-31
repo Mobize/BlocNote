@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, ReflectiveInjector } from '@angular/core';
+import { Subject, Observable, bindCallback } from 'rxjs';
 import { Section } from './models/section.model';
 import { Item } from './models/item.model';
 import * as firebase from 'firebase';
@@ -16,24 +16,14 @@ export class ItemService {
   }
 
   sections: Section[] = [];
-  items: Item[] = [];
   sectionSubject = new Subject<Section[]>();
-  itemSubject = new Subject<Item[]>();
 
   emitSections() {
     this.sectionSubject.next(this.sections);
   }
 
-  emitItems() {
-    this.itemSubject.next(this.items);
-  }
-
   saveSections() {
     firebase.database().ref('/sections').set(this.sections);
-  }
-
-  saveItems(sectionId: number) {
-    firebase.database().ref('/sections/' + sectionId + '/items').push(this.items);
   }
 
   getSections() {
@@ -45,12 +35,24 @@ export class ItemService {
   }
 
   getItems(sectionId: number) {
-    firebase.database().ref('/sections/' + sectionId + '/items')
-    .on('value', (data: DataSnapshot) => {
-      this.items = data.val() ? data.val() : [];
-      console.log(this.items);
-      this.emitItems();
-    });
+    return new Promise(
+      (resolve, reject) => {
+        firebase.database().ref('/sections/' + sectionId + '/items').once('value').then(
+          (data: DataSnapshot) => {
+            resolve(data.val());
+          }, (error) => {
+            reject(error);
+          }
+        )
+      }
+    );
+  }
+
+  gettest(sectionId: number) {
+
+      firebase.database().ref('/sections/' + sectionId + '/items').on('child_added', (snapshot) => {
+        console.log(snapshot.val())
+      })
   }
 
   getSingleSection(id: number) {
@@ -58,11 +60,7 @@ export class ItemService {
       (resolve, reject) => {
         firebase.database().ref('/sections/' + id).once('value').then(
           (data: DataSnapshot) => {
-            data.forEach(function(childSnapshot){
-              console.log(childSnapshot.child('items').child(data.key))
-            })
             resolve(data.val());
-            // console.log(data.val().items)
           }, (error) => {
             reject(error);
           }
@@ -79,7 +77,6 @@ export class ItemService {
 
   createNewItem(newItem: Item, sectionId: number) {
       firebase.database().ref('/sections/' + sectionId + '/items').push(newItem);
-      this.emitItems();
   }
 
   removeSection(section: Section) {

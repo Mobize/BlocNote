@@ -2,8 +2,10 @@
   <div class="col-xs-12">
     <h1>{{ section.title }}</h1>
     <app-item-form></app-item-form>
-    <!-- <div *ngFor="let item of items; let i = index"> -->
-      <!-- {{item.code | json}} -->
-    <!-- </div> -->
+    <div>Items</div>
+    <div *ngFor="let item of items | keyvalue">
+      <div>Titre : {{item.value.title}}</div>
+      <div>Code : {{item.value.code}}</div>
+    </div>
   </div>
 </div>
