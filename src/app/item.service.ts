@@ -12,6 +12,8 @@ import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 })
 export class ItemService {
 
+  idSection: number;
+
   constructor(private route: ActivatedRoute, private router: Router) {
     this.getSections();
 
@@ -21,8 +23,8 @@ export class ItemService {
         map(e => e instanceof ActivationEnd ? e.snapshot.params : {})
       )
       .subscribe(params => {
-      const id =  params.id;
-      this.getItems(id);
+      this.idSection =  params.id;
+      // this.getItems(id);
       });
   }
 
@@ -82,6 +84,11 @@ export class ItemService {
   createNewItem(newItem: Item, sectionId: number) {
     firebase.database().ref('/sections/' + sectionId + '/items').push(newItem);
     this.emitItems();
+  }
+
+  removeItem(key: number) {
+    const item = firebase.database().ref('sections/' + this.idSection + '/items/' + key);
+    item.remove();
   }
 
   removeSection(section: Section) {

@@ -3,9 +3,20 @@
     <h1>{{ section.title }}</h1>
     <app-item-form></app-item-form>
     <div>Items</div>
-    <div *ngFor="let item of items | keyvalue">
-      <div>Titre : {{item.value.title}}</div>
-      <div>Code : {{item.value.code}}</div>
-    </div>
+    <mat-nav-list>
+    <mat-list-item *ngFor="let item of items | keyvalue">
+      <a matLine>{{item.value.title}}</a>
+      <button mat-icon-button >
+        <mat-icon (click)="onDeleteItem(item.key)">delete_sweep</mat-icon>
+     </button>
+      <!-- <div>Code : {{item.value.code}}</div> -->
+      <!-- <mat-list-item *ngFor="let section of sections; let i = index">
+        <a matLine (click)="onViewSection(i)">{{ section.title }}</a>
+        <button mat-icon-button >
+           <mat-icon (click)="onDeleteSection(section)">delete_sweep</mat-icon>
+        </button>
+     </mat-list-item> -->
+    </mat-list-item>
+    </mat-nav-list>
   </div>
 </div>

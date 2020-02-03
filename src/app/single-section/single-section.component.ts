@@ -23,14 +23,12 @@ export class SingleSectionComponent implements OnInit {
   ngOnInit() {
 
     this.section = new Section('');
-
     this.itemsSubscription = this.itemService.itemSubject.subscribe(
-      (test: Item[]) => {
-        this.items = test;
+      (items: Item[]) => {
+        this.items = items;
       }
     );
     this.itemService.emitItems();
-
     this.route.params.subscribe(params => {
       const id = params.id;
       this.itemService.getItems(id);
@@ -41,6 +39,10 @@ export class SingleSectionComponent implements OnInit {
         }
       );
     });
+  }
+
+  onDeleteItem(key: number) {
+    this.itemService.removeItem(key);
   }
 
 }

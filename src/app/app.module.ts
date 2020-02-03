@@ -19,6 +19,7 @@ import { SectionListComponent } from './section-list/section-list.component';
 import { SingleSectionComponent } from './single-section/single-section.component';
 import { SectionFormComponent } from './section-form/section-form.component';
 import { ItemFormComponent } from './item-form/item-form.component';
+import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
   {path: 'cmd', component: CmdComponent},
@@ -37,6 +38,7 @@ const appRoutes: Routes = [
     SingleSectionComponent,
     SectionFormComponent,
     ItemFormComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

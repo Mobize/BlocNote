@@ -3,6 +3,7 @@ import { ItemService } from '../item.service';
 import { Section } from '../models/section.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-section-list',
   templateUrl: './section-list.component.html',
@@ -22,10 +23,6 @@ export class SectionListComponent implements OnInit, OnDestroy {
       }
     );
     this.itemService.emitSections();
-  }
-
-  onNewSection() {
-    this.router.navigate(['/sections', 'new']);
   }
 
   onDeleteSection(section: Section) {
