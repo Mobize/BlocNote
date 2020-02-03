@@ -1,25 +1,42 @@
 import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Subject, Observable, bindCallback } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Section } from './models/section.model';
 import { Item } from './models/item.model';
 import * as firebase from 'firebase';
 import DataSnapshot = firebase.database.DataSnapshot;
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.getSections();
+
+    this.router.events
+      .pipe(
+        filter(e => (e instanceof ActivationEnd) && (Object.keys(e.snapshot.params).length > 0)),
+        map(e => e instanceof ActivationEnd ? e.snapshot.params : {})
+      )
+      .subscribe(params => {
+      const id =  params.id;
+      this.getItems(id);
+      });
   }
 
   sections: Section[] = [];
+  items: Item[] = [];
   sectionSubject = new Subject<Section[]>();
+  itemSubject = new Subject<Item[]>();
 
   emitSections() {
     this.sectionSubject.next(this.sections);
+  }
+
+  emitItems() {
+    this.itemSubject.next(this.items);
   }
 
   saveSections() {
@@ -34,25 +51,12 @@ export class ItemService {
     });
   }
 
-  getItems(sectionId: number) {
-    return new Promise(
-      (resolve, reject) => {
-        firebase.database().ref('/sections/' + sectionId + '/items').once('value').then(
-          (data: DataSnapshot) => {
-            resolve(data.val());
-          }, (error) => {
-            reject(error);
-          }
-        )
-      }
-    );
-  }
-
-  gettest(sectionId: number) {
-
-      firebase.database().ref('/sections/' + sectionId + '/items').on('child_added', (snapshot) => {
-        console.log(snapshot.val())
-      })
+  getItems(id: number) {
+    firebase.database().ref('/sections/' + id + '/items')
+    .on('value', (data: DataSnapshot) => {
+      this.items = data.val() ? data.val() : [];
+      this.emitItems();
+    });
   }
 
   getSingleSection(id: number) {
@@ -76,7 +80,8 @@ export class ItemService {
   }
 
   createNewItem(newItem: Item, sectionId: number) {
-      firebase.database().ref('/sections/' + sectionId + '/items').push(newItem);
+    firebase.database().ref('/sections/' + sectionId + '/items').push(newItem);
+    this.emitItems();
   }
 
   removeSection(section: Section) {

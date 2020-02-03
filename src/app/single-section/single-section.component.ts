@@ -13,7 +13,8 @@ import { Subscription } from 'rxjs';
 export class SingleSectionComponent implements OnInit {
 
   section: Section;
-  items: Item;
+  items: Item[];
+  test;
   itemsSubscription: Subscription;
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
@@ -23,14 +24,16 @@ export class SingleSectionComponent implements OnInit {
 
     this.section = new Section('');
 
+    this.itemsSubscription = this.itemService.itemSubject.subscribe(
+      (test: Item[]) => {
+        this.items = test;
+      }
+    );
+    this.itemService.emitItems();
+
     this.route.params.subscribe(params => {
       const id = params.id;
-
-      this.itemService.getItems(id).then(
-        (items: Item) => {
-          this.items = items;
-        }
-      );
+      this.itemService.getItems(id);
 
       this.itemService.getSingleSection(+id).then(
         (section: Section) => {
