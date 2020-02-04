@@ -20,6 +20,7 @@ import { SingleSectionComponent } from './single-section/single-section.componen
 import { SectionFormComponent } from './section-form/section-form.component';
 import { ItemFormComponent } from './item-form/item-form.component';
 import { HomeComponent } from './home/home.component';
+import {MatBadgeModule} from '@angular/material/badge';
 
 const appRoutes: Routes = [
   {path: 'cmd', component: CmdComponent},
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
     MatDividerModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatBadgeModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

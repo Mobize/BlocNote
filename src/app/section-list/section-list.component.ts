@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ItemService } from '../item.service';
 import { Section } from '../models/section.model';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-section-list',
@@ -13,10 +13,12 @@ export class SectionListComponent implements OnInit, OnDestroy {
 
   sections: Section[];
   sectionsSubscription: Subscription;
+  objectKeys = Object.keys;
 
   constructor(private itemService: ItemService, private router: Router) { }
 
   ngOnInit() {
+
     this.sectionsSubscription = this.itemService.sectionSubject.subscribe(
       (section: Section[]) => {
         this.sections = section;

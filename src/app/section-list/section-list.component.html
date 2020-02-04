@@ -3,6 +3,7 @@
     <mat-nav-list>
       <mat-list-item *ngFor="let section of sections; let i = index">
          <a matLine (click)="onViewSection(i)">{{ section.title }}</a>
+         <span style="right:20px" *ngIf="section.items" matBadge="{{objectKeys(section.items).length}}" matBadgeOverlap="false"></span>
          <button mat-icon-button >
             <mat-icon (click)="onDeleteSection(section)">delete_sweep</mat-icon>
          </button>
