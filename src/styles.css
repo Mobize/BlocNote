@@ -5,7 +5,8 @@ body { margin: 0; font-family: 'Raleway', sans-serif; }
 
 .h2 {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 0px;
 }
 
 .mb5 {
@@ -49,10 +50,12 @@ a:hover {
 
 .code {
   background: #283142;
-  color: #f0a2ff;
+  color: white;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 4px;
+  width: 100%;
+  height: 100%;
 }
 
 .mat-card {
@@ -102,8 +105,55 @@ a:hover {
   width: 100%;
 }
 
-.form_section {
-  margin: 0;;
+#submit_item_button {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
 
+.mat-snack-bar-container {
+  /* background:#3f51b5 ; */
+  background:#007bff94 ;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.mat-fab, .mat-flat-button, .mat-mini-fab, .mat-raised-button {
+  background-color: #007bff94;
+  color: white;
+}
+
+.mat-badge-content {
+  /* background: #d907ff8a; */
+  background: #e91e63b8;
+}
+
+.add_item_button.mat-raised-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 15px;
+}
+
+#item_list {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.section_list_icon {
+  font-size: 22px;
+  position: relative;
+  top: 5px;
+  color: #6bb2ff;
+}
+
+.empty_item_icon {
+  margin-right: -2px;
+  font-size: 26px;
+  margin-bottom: 3px;
+  color: #FFC107;
+}
 

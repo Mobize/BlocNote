@@ -15,6 +15,8 @@ export class ItemFormComponent implements OnInit {
   itemForm: FormGroup;
   item: Item;
   itemId: number;
+  showForm = false;
+  // buttonName = '+';
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private itemService: ItemService) { }
 
@@ -24,6 +26,16 @@ export class ItemFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.itemId = params.id;
     });
+  }
+
+  toggleForm() {
+    this.showForm = !this.showForm;
+
+    // if (this.showForm) {
+    //   this.buttonName = '-';
+    // } else {
+    //   this.buttonName = '+';
+    // }
   }
 
   initForm() {

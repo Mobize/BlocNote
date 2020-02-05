@@ -1,8 +1,11 @@
+import { ConfirmationDialogComponent } from './../confirmation-dialog/confirmation-dialog.component';
+import { SnackBarConfirmationComponent } from './../snack-bar-confirmation/snack-bar-confirmation.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ItemService } from '../item.service';
 import { Section } from '../models/section.model';
 import { Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-section-list',
@@ -15,7 +18,8 @@ export class SectionListComponent implements OnInit, OnDestroy {
   sectionsSubscription: Subscription;
   objectKeys = Object.keys;
 
-  constructor(private itemService: ItemService, private router: Router) { }
+  constructor(private itemService: ItemService, private router: Router, public dialog: MatDialog,
+              private snackBar: SnackBarConfirmationComponent) { }
 
   ngOnInit() {
 
@@ -25,6 +29,21 @@ export class SectionListComponent implements OnInit, OnDestroy {
       }
     );
     this.itemService.emitSections();
+  }
+
+  openDialog(section): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '350px',
+      data: 'Voulez-vous supprimer la section "' + section.title + '"  ?'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.onDeleteSection(section);
+        this.snackBar.openSnackBarSection();
+        this.router.navigate(['/']);
+      }
+    });
   }
 
   onDeleteSection(section: Section) {

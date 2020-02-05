@@ -21,8 +21,14 @@ import { SectionFormComponent } from './section-form/section-form.component';
 import { ItemFormComponent } from './item-form/item-form.component';
 import { HomeComponent } from './home/home.component';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+// tslint:disable-next-line: max-line-length
+import { SnackBarConfirmationComponent, SnackBarItemComponent, SnackBarSectionComponent } from './snack-bar-confirmation/snack-bar-confirmation.component';
 
 const appRoutes: Routes = [
+  {path: '', component: HomeComponent},
   {path: 'cmd', component: CmdComponent},
   {path: 'form', component: FormComponent},
   {path: 'add-section', component: SectionFormComponent},
@@ -40,6 +46,10 @@ const appRoutes: Routes = [
     SectionFormComponent,
     ItemFormComponent,
     HomeComponent,
+    ConfirmationDialogComponent,
+    SnackBarConfirmationComponent,
+    SnackBarItemComponent,
+    SnackBarSectionComponent
   ],
   imports: [
     BrowserModule,
@@ -54,9 +64,17 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MatIconModule,
     MatBadgeModule,
+    MatDialogModule,
+    MatSnackBarModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  entryComponents: [
+    ConfirmationDialogComponent,
+    SnackBarConfirmationComponent,
+    SnackBarItemComponent,
+    SnackBarSectionComponent
+  ],
+  providers: [SnackBarConfirmationComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

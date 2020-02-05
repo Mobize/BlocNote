@@ -1,7 +1,11 @@
 <div class="row form_section">
-  <div class="col-md-12">
-    <h2>Nouvel Item</h2>
-    <form [formGroup]="itemForm" (ngSubmit)="onSaveItem()">
+<button class="add_item_button" mat-raised-button (click)="toggleForm()">
+  <mat-icon *ngIf="!showForm else toggleFrm">create</mat-icon>
+  <ng-template #toggleFrm><mat-icon>undo</mat-icon></ng-template>
+
+</button>
+  <div *ngIf="showForm" class="col-md-12">
+    <form class="item_form" [formGroup]="itemForm" (ngSubmit)="onSaveItem()">
       <div class="form-group">
         <label for="title">Titre</label>
         <input type="text" id="title"
@@ -11,10 +15,11 @@
         <label for="title">Code</label>
         <textarea  id="title"class="form-control" formControlName="code"></textarea>
       </div>
-      <button class="btn btn-success" [disabled]="itemForm.invalid"
-              type="submit">Enregistrer
-      </button>
-
+      <div id="submit_item_button">
+        <button id="submit_button_item_form" class="btn btn-success" [disabled]="itemForm.invalid"
+                type="submit">Enregistrer
+        </button>
+      </div>
     </form>
   </div>
 </div>

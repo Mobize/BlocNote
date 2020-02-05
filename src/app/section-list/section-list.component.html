@@ -2,10 +2,11 @@
   <div class="col-xs-12 list_section">
     <mat-nav-list>
       <mat-list-item *ngFor="let section of sections; let i = index">
-         <a matLine (click)="onViewSection(i)">{{ section.title }}</a>
+         <a matLine (click)="onViewSection(i)"><mat-icon class="section_list_icon">settings_backup_restore</mat-icon>{{ section.title }}</a>
          <span style="right:20px" *ngIf="section.items" matBadge="{{objectKeys(section.items).length}}" matBadgeOverlap="false"></span>
+         <mat-icon class="empty_item_icon" *ngIf="!section.items">error_outline</mat-icon>
          <button mat-icon-button >
-            <mat-icon (click)="onDeleteSection(section)">delete_sweep</mat-icon>
+            <mat-icon (click)="openDialog(section)">delete_sweep</mat-icon>
          </button>
       </mat-list-item>
     </mat-nav-list>

@@ -15,3 +15,22 @@
   width: 300px;
 }
 
+.dashboard_icon {
+  color:#007bff94;
+  font-size: 32px;
+  margin-right: 10px;
+}
+
+.link_h2 {
+  color:black;
+}
+
+.add_section_button {
+  display: flex;
+  justify-content: center;
+}
+
+.add_section_button button{
+  width: 90%;
+  margin: 10px 0px;
+}
