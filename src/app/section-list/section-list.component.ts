@@ -17,6 +17,7 @@ export class SectionListComponent implements OnInit, OnDestroy {
   sections: Section[];
   sectionsSubscription: Subscription;
   objectKeys = Object.keys;
+  selectedValue;
 
   constructor(private itemService: ItemService, private router: Router, public dialog: MatDialog,
               private snackBar: SnackBarConfirmationComponent) { }
@@ -33,7 +34,7 @@ export class SectionListComponent implements OnInit, OnDestroy {
 
   openDialog(section): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '350px',
+      width: '370px',
       data: 'Voulez-vous supprimer la section "' + section.title + '"  ?'
     });
 
@@ -52,6 +53,7 @@ export class SectionListComponent implements OnInit, OnDestroy {
 
   onViewSection(id: number) {
     this.router.navigate(['/sections', id]);
+    this.selectedValue = id;
   }
 
   ngOnDestroy() {

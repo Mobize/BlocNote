@@ -1,18 +1,43 @@
 <div class="row row_section">
   <div class="col-md-4">
     <h1 class="section_name" *ngIf="section"><mat-icon>donut_small</mat-icon>{{ section.title }}</h1>
-    <app-item-form></app-item-form>
+
+    <button class="add_item_button" mat-raised-button (click)="openEditForm()">
+      <mat-icon>add</mat-icon>
+      <!-- <ng-template #toggleFrm><mat-icon>remove</mat-icon></ng-template> -->
+    </button>
+
     <mat-nav-list>
-    <mat-list-item id="item_list" *ngFor="let item of items | keyvalue">
-      <a (click)="openItem(item)"  *ngIf="item.value.title" matLine><mat-icon *ngIf="item.value.code">code</mat-icon>{{item.value.title}}</a>
-      <button mat-icon-button >
+    <mat-list-item id="item_list" *ngFor="let item of items | keyvalue ; let i = index" [class.changeColor]="item.key == selectedValue">
+      <a (click)="openItem(item, item.key)" *ngIf="item.value.title" matLine><mat-icon [class.yellow]="item.key == selectedValue">code</mat-icon>{{item.value.title}}</a>
+      <button mat-icon-button>
+        <mat-icon id="edit_item_icon" (click)="onEditItem(item)">edit</mat-icon>
         <mat-icon (click)="openDialog(item.key, item.value.title)">delete_sweep</mat-icon>
      </button>
     </mat-list-item>
     </mat-nav-list>
   </div>
   <div class="col-md-7">
-  <div>{{itemTitle}}</div>
-  <textarea *ngIf="itemCode" [(ngModel)]="itemCode" class="code">{{itemCode}}</textarea>
+      <div class="col-md-8">
+        <div *ngIf="showForm">{{itemMode}}</div>
+        <div *ngIf="showTitle">{{itemTitle}}</div>
+        <form *ngIf="showForm" class="item_form" [formGroup]="itemForm" (ngSubmit)="onSaveItem()">
+          <div class="form-group">
+            <label for="title">Titre</label>
+            <input type="text" id="title"
+                  class="form-control" formControlName="title">
+          </div>
+          <div class="form-group">
+            <label for="title">Code</label>
+            <textarea  id="title"class="form-control" formControlName="code" class="code"></textarea>
+          </div>
+          <div id="submit_item_button">
+            <button id="submit_button_item_form" class="btn btn-success" [disabled]="itemForm.invalid"
+                    type="submit">Enregistrer
+            </button>
+          </div>
+        </form>
+      </div>
+    <textarea *ngIf="itemCode && showCode" [(ngModel)]="itemCode" class="code">{{itemCode}}</textarea>
   </div>
 </div>

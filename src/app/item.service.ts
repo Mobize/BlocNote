@@ -86,6 +86,10 @@ export class ItemService {
     this.emitItems();
   }
 
+  updateItem(item: Item, sectionId: number, key: number) {
+    firebase.database().ref('/sections/' + sectionId + '/items/' + key).update(item);
+  }
+
   removeItem(key: number) {
     const item = firebase.database().ref('sections/' + this.idSection + '/items/' + key);
     item.remove();

@@ -49,7 +49,7 @@ const appRoutes: Routes = [
     ConfirmationDialogComponent,
     SnackBarConfirmationComponent,
     SnackBarItemComponent,
-    SnackBarSectionComponent
+    SnackBarSectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +74,7 @@ const appRoutes: Routes = [
     SnackBarItemComponent,
     SnackBarSectionComponent
   ],
-  providers: [SnackBarConfirmationComponent],
+  providers: [SnackBarConfirmationComponent, ItemFormComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

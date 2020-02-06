@@ -1,8 +1,8 @@
 <div class="row row_section">
   <div class="col-xs-12 list_section">
     <mat-nav-list>
-      <mat-list-item *ngFor="let section of sections; let i = index">
-         <a matLine (click)="onViewSection(i)"><mat-icon class="section_list_icon">settings_backup_restore</mat-icon>{{ section.title }}</a>
+      <mat-list-item id="section_list" *ngFor="let section of sections; let i = index" [class.changeColor]="i == selectedValue">
+         <a  matLine (click)="onViewSection(i)"><mat-icon class="section_list_icon" [class.yellow]="i == selectedValue">settings_backup_restore</mat-icon>{{ section.title }}</a>
          <span style="right:20px" *ngIf="section.items" matBadge="{{objectKeys(section.items).length}}" matBadgeOverlap="false"></span>
          <mat-icon class="empty_item_icon" *ngIf="!section.items">error_outline</mat-icon>
          <button mat-icon-button >

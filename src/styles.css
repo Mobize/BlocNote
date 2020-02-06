@@ -121,8 +121,10 @@ button:focus {
 }
 
 .mat-fab, .mat-flat-button, .mat-mini-fab, .mat-raised-button {
-  background-color: #007bff94;
-  color: white;
+  /* background-color: #007bff94;
+  color: white; */
+  background-color: white;
+  color: #007bff94;
 }
 
 .mat-badge-content {
@@ -137,17 +139,62 @@ button:focus {
   margin-right: 15px;
 }
 
+#edit_item_icon {
+  position: relative;
+  right: 10px;
+}
+
 #item_list {
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
   background-color: white;
   margin-bottom: 10px;
 }
 
+#item_list:hover {
+  background-color: rgb(107, 178, 255);
+}
+
+#section_list:hover {
+  background-color: rgb(107, 178, 255);
+}
+
+.confirmation_message {
+  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.mat-dialog-content {
+  display: flex !important;
+}
+
+.changeColor {
+  /* background-color: #98999a4a !important; */
+  background-color: #6bb2ff !important;
+  color: white !important;
+}
+
+.changeColor:hover {
+  color: grey !important;
+}
+
+.yellow {
+  color: yellow !important;
+}
+
+a.mat-line {
+  width: 92%;
+}
+
+.mat-list-item-content:hover {
+  color: white;
+}
+
 .section_list_icon {
   font-size: 22px;
   position: relative;
   top: 5px;
-  color: #6bb2ff;
+  /* color: #6bb2ff; */
 }
 
 .empty_item_icon {
