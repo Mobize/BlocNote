@@ -95,6 +95,7 @@ export class SingleSectionComponent implements OnInit {
 
   openEditForm() {
     this.itemMode = 'Création d\'un Item';
+    this.selectedValue = '';
     this.showForm = true;
     this.showCode = false;
     this.editItem = false;
@@ -131,6 +132,10 @@ export class SingleSectionComponent implements OnInit {
 
   onDeleteItem(key: number) {
     this.itemService.removeItem(key);
+  }
+
+  cancel() {
+    this.showForm = false;
   }
 
 }

@@ -35,7 +35,7 @@ export class SectionListComponent implements OnInit, OnDestroy {
   openDialog(section): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '370px',
-      data: 'Voulez-vous supprimer la section "' + section.title + '"  ?'
+      data: 'Voulez-vous supprimer la section "' + section.title
     });
 
     dialogRef.afterClosed().subscribe(result => {

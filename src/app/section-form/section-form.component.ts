@@ -31,7 +31,11 @@ export class SectionFormComponent implements OnInit {
     const newSection = new Section(title);
     this.itemService.createNewSection(newSection);
     this.initForm();
-    // this.router.navigate(['/sections']);
+  }
+
+  cancel() {
+    this.sectionForm.reset();
+    this.router.navigate(['/']);
   }
 
 }

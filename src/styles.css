@@ -48,6 +48,10 @@ a:hover {
   color:grey;
 }
 
+.open_nav_icon {
+  font-size: 2em;
+}
+
 .code {
   background: #283142;
   color: white;
@@ -105,11 +109,16 @@ a:hover {
   width: 100%;
 }
 
-#submit_item_button {
+.btn.btn-danger.cancel {
+  width: 106.31px;
+  margin-left: 10px;
+}
+
+/* #submit_item_button {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
-}
+} */
 
 .mat-snack-bar-container {
   /* background:#3f51b5 ; */

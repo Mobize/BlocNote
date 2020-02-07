@@ -1,16 +1,16 @@
 <div class="row form_section">
-  <div class="col-md-6">
-    <h2>Nouvelle section</h2>
+  <div class="col-md-4">
+    <h2 style="text-align: center;">Nouvelle section</h2>
     <form [formGroup]="sectionForm" (ngSubmit)="onSaveSection()">
       <div class="form-group">
         <label for="title">Titre</label>
         <input type="text" id="title"
                class="form-control" formControlName="title">
       </div>
-      <button class="btn btn-success" [disabled]="sectionForm.invalid"
-              type="submit">Enregistrer
-      </button>
-
+      <div class="submit_new_section_button">
+        <button class="btn btn-success" [disabled]="sectionForm.invalid" type="submit">Enregistrer</button>
+        <button type="button" class="btn btn-danger cancel" (click)="cancel()">Annuler</button>
+      </div>
     </form>
   </div>
 </div>

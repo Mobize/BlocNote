@@ -17,7 +17,7 @@
     </mat-list-item>
     </mat-nav-list>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-7" style="margin-left:5px">
       <div class="col-md-8">
         <div *ngIf="showForm">{{itemMode}}</div>
         <div *ngIf="showTitle">{{itemTitle}}</div>
@@ -27,7 +27,7 @@
             <input type="text" id="title"
                   class="form-control" formControlName="title">
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom: 0px;">
             <label for="title">Code</label>
             <textarea  id="title"class="form-control" formControlName="code" class="code"></textarea>
           </div>
@@ -35,6 +35,7 @@
             <button id="submit_button_item_form" class="btn btn-success" [disabled]="itemForm.invalid"
                     type="submit">Enregistrer
             </button>
+            <button class="btn btn-danger cancel" (click)="cancel()">Annuler</button>
           </div>
         </form>
       </div>
