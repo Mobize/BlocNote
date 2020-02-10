@@ -142,15 +142,26 @@ button:focus {
 }
 
 .add_item_button.mat-raised-button {
+  width: 39px;
+  min-width: 39px;
+  padding: 0;
   position: absolute;
-  top: 0;
-  right: 0;
-  margin-right: 15px;
+  top: -2px;
+  right: 16px;
+  border-radius: 20px;
 }
 
 #edit_item_icon {
   position: relative;
   right: 10px;
+}
+
+#edit_item {
+  margin-left: 20px;
+    cursor: pointer;
+    right: 60px;
+    position: absolute;
+    top: 3px;
 }
 
 #item_list {
@@ -168,9 +179,7 @@ button:focus {
 }
 
 .confirmation_message {
-  text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .mat-dialog-content {

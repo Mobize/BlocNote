@@ -1,13 +1,24 @@
 <div class="row row_section">
   <div class="col-md-4">
-    <h1 class="section_name" *ngIf="section"><mat-icon>donut_small</mat-icon>{{ section.title }}</h1>
+    <h1 class="section_name" style="font-size: 25px;padding: 0 65px;" *ngIf="section && !editSection">
+      {{ section.title }}
+    </h1>
+    <mat-icon *ngIf="!editSection" id="edit_item"
+    (click)="onEditSection(section)">edit
+    </mat-icon>
+    <div class="edit_section" *ngIf="editSection">
+    <div class="section_title_edit">Édition de la Section {{section.title}}</div>
+      <input type="text" class="form-control section_titlt_edit_name"  [(ngModel)]="section.title">
+      <button class="btn btn-success" (click)="saveEditSection(section)">Enregistrer</button>
+      <button class="btn btn-danger" style="margin-left: 10px;width:106.31px" (click)="cancelEditSection()">Annuler</button>
+    </div>
 
-    <button class="add_item_button" mat-raised-button (click)="openEditForm()">
+    <button class="add_item_button" *ngIf="!editSection" mat-raised-button (click)="openEditForm()">
       <mat-icon>add</mat-icon>
-      <!-- <ng-template #toggleFrm><mat-icon>remove</mat-icon></ng-template> -->
     </button>
-
+    <hr style=" background-color:#6bb2ff;">
     <mat-nav-list>
+      <!-- items -->
     <mat-list-item id="item_list" *ngFor="let item of items | keyvalue ; let i = index" [class.changeColor]="item.key == selectedValue">
       <a (click)="openItem(item, item.key)" *ngIf="item.value.title" matLine><mat-icon [class.yellow]="item.key == selectedValue">code</mat-icon>{{item.value.title}}</a>
       <button mat-icon-button>
@@ -19,8 +30,10 @@
   </div>
   <div class="col-md-7" style="margin-left:5px">
       <div class="col-md-8">
-        <div *ngIf="showForm">{{itemMode}}</div>
+        <div class="item_title" *ngIf="showForm">{{itemMode}}</div>
         <div *ngIf="showTitle">{{itemTitle}}</div>
+        <hr *ngIf="showForm && editItem" style="background-color: #ef5d8e;margin-bottom: 25px;">
+        <hr *ngIf="showForm && !editItem" style="background-color: #38e660;margin-bottom: 25px;">
         <form *ngIf="showForm" class="item_form" [formGroup]="itemForm" (ngSubmit)="onSaveItem()">
           <div class="form-group">
             <label for="title">Titre</label>

@@ -17,9 +17,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class SingleSectionComponent implements OnInit {
 
   section: Section;
+  editSection = false;
+  sectionTitle = '';
   items: Item[];
   itemForm: FormGroup;
-  itemId: number;
+  sectionId: number;
   itemKey: number;
   itemTitle: string;
   itemCode: string;
@@ -48,13 +50,14 @@ export class SingleSectionComponent implements OnInit {
     );
     this.itemService.emitItems();
     this.route.params.subscribe(params => {
-      this.itemId = params.id;
-      this.itemService.getItems(this.itemId);
-      this.itemService.getSingleSection(+this.itemId).then(
+      this.sectionId = params.id;
+      this.itemService.getItems(this.sectionId);
+      this.itemService.getSingleSection(+this.sectionId).then(
         (section: Section) => {
           this.section = section;
           this.selectedValue = '';
           this.showForm = false;
+          this.editSection = false;
         }
       );
     });
@@ -67,15 +70,29 @@ export class SingleSectionComponent implements OnInit {
     });
   }
 
+  onEditSection() {
+    this.editSection = true;
+    this.showForm = false;
+  }
+
+  saveEditSection(section) {
+    this.itemService.updateSection(this.sectionId, section);
+    this.editSection = false;
+  }
+
+  cancelEditSection() {
+    this.editSection = false;
+  }
+
   onSaveItem() {
     const title = this.itemForm.get('title').value;
     const code = this.itemForm.get('code').value;
     const newItem = new Item(title, code);
 
     if (this.editItem) {
-      this.itemService.updateItem(newItem, this.itemId, this.itemKey);
+      this.itemService.updateItem(newItem, this.sectionId, this.itemKey);
     } else {
-      this.itemService.createNewItem(newItem, this.itemId);
+      this.itemService.createNewItem(newItem, this.sectionId);
     }
     this.initForm();
     this.showForm = false;
@@ -119,7 +136,7 @@ export class SingleSectionComponent implements OnInit {
     this.selectedValue = item.toString();
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '370px',
-      data: 'Voulez-vous supprimer l\'item ' + title
+      data: 'Confirmer la suppression d\'item ?'
     });
 
     dialogRef.afterClosed().subscribe(result => {

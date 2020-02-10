@@ -34,8 +34,8 @@ export class SectionListComponent implements OnInit, OnDestroy {
 
   openDialog(section): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '370px',
-      data: 'Voulez-vous supprimer la section "' + section.title
+      width: '350px',
+      data: 'Confirmer la suppression de section ?'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -45,6 +45,10 @@ export class SectionListComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
       }
     });
+  }
+
+  onEditSection(section, id) {
+    // this.router.navigate(['/sections/edit', id]);
   }
 
   onDeleteSection(section: Section) {

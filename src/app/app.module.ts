@@ -1,3 +1,4 @@
+import { EditSectionComponent } from './edit-section/edit-section.component';
 import { CmdComponent } from './cmd/cmd.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -32,7 +33,8 @@ const appRoutes: Routes = [
   {path: 'cmd', component: CmdComponent},
   {path: 'form', component: FormComponent},
   {path: 'add-section', component: SectionFormComponent},
-  {path: 'sections/:id', component: SingleSectionComponent}
+  {path: 'sections/:id', component: SingleSectionComponent},
+  {path: 'sections/edit/:id', component: EditSectionComponent}
 ];
 
 @NgModule({
@@ -44,6 +46,7 @@ const appRoutes: Routes = [
     SectionListComponent,
     SingleSectionComponent,
     SectionFormComponent,
+    EditSectionComponent,
     ItemFormComponent,
     HomeComponent,
     ConfirmationDialogComponent,
