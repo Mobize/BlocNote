@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from './../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-single-section',
@@ -32,6 +32,7 @@ export class SingleSectionComponent implements OnInit {
   showCode: boolean;
   showTitle = false;
   selectedValue = '';
+  selected = new FormControl(0);
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
               private router: Router, public dialog: MatDialog,
@@ -40,6 +41,7 @@ export class SingleSectionComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.addCodes();
     this.section = new Section('');
     this.itemsSubscription = this.itemService.itemSubject.subscribe(
       (items: Item[]) => {
@@ -66,8 +68,26 @@ export class SingleSectionComponent implements OnInit {
   initForm() {
     this.itemForm = this.fb.group({
       title : ['', Validators.required],
-      code : '',
+      codes : this.fb.array([])
     });
+  }
+
+  get FormData() {
+    return this.itemForm.get('codes') as FormArray;
+  }
+
+  addCodes() {
+    const codes = this.itemForm.controls.codes as FormArray;
+    codes.push(this.fb.group({
+      language: '',
+      script: ''
+    }));
+    this.selected.setValue(this.FormData.controls.length - 1);
+  }
+
+  removeCode(i: number) {
+    const codes = this.itemForm.controls.codes as FormArray;
+    codes.removeAt(i);
   }
 
   onEditSection() {
@@ -86,7 +106,7 @@ export class SingleSectionComponent implements OnInit {
 
   onSaveItem() {
     const title = this.itemForm.get('title').value;
-    const code = this.itemForm.get('code').value;
+    const code = this.itemForm.get('codes').value;
     const newItem = new Item(title, code);
 
     if (this.editItem) {
@@ -95,6 +115,7 @@ export class SingleSectionComponent implements OnInit {
       this.itemService.createNewItem(newItem, this.sectionId);
     }
     this.initForm();
+    this.addCodes();
     this.showForm = false;
   }
 
@@ -127,7 +148,7 @@ export class SingleSectionComponent implements OnInit {
     this.showTitle = true;
     this.showCode = true;
     this.itemTitle = item.value.title;
-    this.itemCode = item.value.code;
+    this.itemCode = item.value.codes;
   }
 
 

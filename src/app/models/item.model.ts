@@ -1,8 +1,8 @@
 export class Item {
   title: string;
-  code: string;
-  constructor(title, code?) {
+  codes: [];
+  constructor(title, codes?) {
     this.title = title;
-    this.code = code;
+    this.codes = codes;
   }
 }
