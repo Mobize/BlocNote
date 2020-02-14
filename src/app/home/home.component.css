@@ -1,0 +1,11 @@
+.section-card {
+  max-width: 300px;
+}
+
+/* A modifier */
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100px;
+}

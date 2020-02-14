@@ -47,10 +47,6 @@ export class SectionListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onEditSection(section, id) {
-    // this.router.navigate(['/sections/edit', id]);
-  }
-
   onDeleteSection(section: Section) {
     this.itemService.removeSection(section);
   }

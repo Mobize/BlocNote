@@ -1,6 +1,6 @@
 import { SnackBarConfirmationComponent } from './../snack-bar-confirmation/snack-bar-confirmation.component';
 import { Item } from './../models/item.model';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ItemService } from '../item.service';
 import { Section } from '../models/section.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@ang
   templateUrl: './single-section.component.html',
   styleUrls: ['./single-section.component.css']
 })
-export class SingleSectionComponent implements OnInit {
+export class SingleSectionComponent implements OnInit, OnDestroy {
 
   section: Section;
   editSection = false;
@@ -187,6 +187,11 @@ export class SingleSectionComponent implements OnInit {
 
   cancel() {
     this.showForm = false;
+  }
+
+  ngOnDestroy(): void {
+    this.itemsSubscription.unsubscribe();
+
   }
 
 }

@@ -1,5 +1,5 @@
  <mat-sidenav-container class="main_container">
-  <mat-sidenav class="sidenav_container" #sidenav mode="side" [(opened)]="opened">
+  <mat-sidenav class="sidenav_container" #sidenav mode="side" [(opened)]="opened" (closed)="onClose()" (opened)="onOpen()">
     <h2 class="h2"><a routerLink="/" class="link_h2"><mat-icon class="dashboard_icon">dashboard</mat-icon>Bloc Note</a></h2>
     <!-- <hr style="width:58%;background:#6bb2ff; margin-bottom: 5px;margin-top: 5px;"> -->
     <div class="add_section_button">
@@ -10,6 +10,7 @@
 
   <mat-sidenav-content>
     <mat-icon (click)="sidenav.toggle()" class="open_nav_icon">reorder</mat-icon>
+    <span *ngIf="showHomeIcon" class="home-icon">Home</span>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

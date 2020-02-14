@@ -1,3 +1,4 @@
+import { ItemService } from './../item.service';
 import { Component, OnInit } from '@angular/core';
 import { Section } from '../models/section.model';
 import { Subscription } from 'rxjs';
@@ -10,9 +11,19 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  sectionsSubscription: Subscription;
+  sections: Section[];
+
+  constructor(private itemService: ItemService) { }
 
   ngOnInit() {
+
+    this.sectionsSubscription = this.itemService.sectionSubject.subscribe(
+      (section: Section[]) => {
+        this.sections = section;
+      }
+    );
+    this.itemService.emitSections();
   }
 
 }

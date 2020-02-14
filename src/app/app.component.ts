@@ -8,6 +8,7 @@ import * as firebase from 'firebase';
 })
 export class AppComponent {
   opened = true;
+  showHomeIcon = false;
 
   constructor() {
     const config = {
@@ -21,6 +22,16 @@ export class AppComponent {
       measurementId: 'G-KFLDJFECZN'
     };
     firebase.initializeApp(config);
+  }
+
+  onClose() {
+    console.log('close')
+    this.showHomeIcon = true;
+  }
+
+  onOpen() {
+    console.log('open')
+    this.showHomeIcon = false;
   }
 
 }

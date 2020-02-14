@@ -25,8 +25,11 @@ import {MatBadgeModule} from '@angular/material/badge';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-// tslint:disable-next-line: max-line-length
-import { SnackBarConfirmationComponent, SnackBarItemComponent, SnackBarSectionComponent } from './snack-bar-confirmation/snack-bar-confirmation.component';
+import {
+  SnackBarConfirmationComponent,
+  SnackBarItemComponent,
+  SnackBarSectionComponent
+} from './snack-bar-confirmation/snack-bar-confirmation.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
