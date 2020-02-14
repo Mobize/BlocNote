@@ -33,6 +33,7 @@ export class SingleSectionComponent implements OnInit {
   showTitle = false;
   selectedValue = '';
   selected = new FormControl(0);
+  codes;
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
               private router: Router, public dialog: MatDialog,
@@ -41,7 +42,8 @@ export class SingleSectionComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.addCodes();
+    this.codes = [];
+    // this.addCodes();
     this.section = new Section('');
     this.itemsSubscription = this.itemService.itemSubject.subscribe(
       (items: Item[]) => {
@@ -70,19 +72,7 @@ export class SingleSectionComponent implements OnInit {
       title : ['', Validators.required],
       codes : this.fb.array([])
     });
-  }
-
-  get FormData() {
-    return this.itemForm.get('codes') as FormArray;
-  }
-
-  addCodes() {
-    const codes = this.itemForm.controls.codes as FormArray;
-    codes.push(this.fb.group({
-      language: '',
-      script: ''
-    }));
-    this.selected.setValue(this.FormData.controls.length - 1);
+    this.addCodes();
   }
 
   removeCode(i: number) {
@@ -119,19 +109,42 @@ export class SingleSectionComponent implements OnInit {
     this.showForm = false;
   }
 
+  get FormData() {
+    return this.itemForm.get('codes') as FormArray;
+  }
+
+  addCodes() {
+    const codes = this.itemForm.controls.codes as FormArray;
+    codes.push(this.fb.group({
+      language: ['', Validators.required],
+      script: ['', Validators.required],
+    }));
+    this.selected.setValue(this.FormData.controls.length - 1);
+  }
+
   onEditItem(item) {
     this.selectedValue = item.key;
     this.editItem = true;
     this.itemMode = 'Modification d\'un Item';
     this.showForm = true;
     this.itemForm.get('title').setValue(item.value.title);
-    this.itemForm.get('code').setValue(item.value.code);
+    this.codes = this.itemForm.controls.codes as FormArray;
+    item.value.codes.forEach(() => {
+      this.codes.push(this.fb.group({
+          language: '',
+          script: ''
+        })
+      );
+    });
+    this.FormData.controls.length = item.value.codes.length;
+    this.itemForm.get('codes').setValue(item.value.codes);
     this.itemKey = item.key;
     this.showCode = false;
     this.showTitle = false;
   }
 
-  openEditForm() {
+  openNewItemForm() {
+    this.FormData.controls.length = 1;
     this.itemMode = 'Création d\'un Item';
     this.selectedValue = '';
     this.showForm = true;
@@ -153,7 +166,6 @@ export class SingleSectionComponent implements OnInit {
 
 
   openDialog(item: number, title: string): void {
-
     this.selectedValue = item.toString();
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '370px',
@@ -170,6 +182,7 @@ export class SingleSectionComponent implements OnInit {
 
   onDeleteItem(key: number) {
     this.itemService.removeItem(key);
+    this.showForm = false;
   }
 
   cancel() {

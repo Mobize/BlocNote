@@ -13,11 +13,11 @@
       <button class="btn btn-danger" style="margin-left: 10px;width:106.31px" (click)="cancelEditSection()">Annuler</button>
     </div>
 
-    <button class="add_item_button" *ngIf="!editSection" mat-raised-button (click)="openEditForm()">
+    <button class="add_item_button" *ngIf="!editSection" mat-raised-button (click)="openNewItemForm()">
       <mat-icon>add</mat-icon>
     </button>
-    <!-- <hr style=" background-color:#6bb2ff;"> -->
     <mat-nav-list>
+
       <!-- items -->
     <mat-list-item id="item_list" *ngFor="let item of items | keyvalue ; let i = index" [class.changeColor]="item.key == selectedValue">
       <a (click)="openItem(item, item.key)" *ngIf="item.value.title" matLine><mat-icon [class.yellow]="item.key == selectedValue">code</mat-icon>{{item.value.title}}</a>
@@ -51,7 +51,7 @@
                   <div [formGroupName]="i">
                     <input class="form-control language_input" placeholder="Langage" formControlName="language">
                     <textarea class="form-control script_input code_edit" placeholder="Script" formControlName="script"></textarea>
-                    <button mat-raised-button type="button" class="btn btn-default" (click)="removeCode(i)">Supprimer</button>
+                    <button mat-raised-button class="deleteCode_button" type="button" (click)="removeCode(i)" [disabled]="FormData.controls.length === 1">Supprimer</button>
                     <hr>
                   </div>
                 </mat-tab>
@@ -65,7 +65,7 @@
               <button class="btn btn-danger cancel" (click)="cancel()">Annuler</button>
             </div>
         </form>
-        <mat-tab-group *ngIf="showCode">
+        <mat-tab-group *ngIf="showCode && itemCode">
           <mat-tab *ngFor="let tab of itemCode; let index = index" [label]="tab.language">
             <textarea class="code">{{tab.script}}</textarea>
           </mat-tab>
