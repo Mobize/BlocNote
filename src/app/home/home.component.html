@@ -1,12 +1,15 @@
-<h1 style="text-align: center; margin-bottom: 25px;">Welcome Home!</h1>
+<h1 style="text-align: center; margin-bottom: 25px;">Welcome Home! (Version Dev)</h1>
 <div class="row" style="margin-right:0px;margin-left:50px;">
-  <div *ngFor="let section of sections">
+  <div *ngFor="let section of sections; let i = index">
     <div class="col-md-12">
         <mat-card class="section-card">
           <mat-card-header>
             <!-- <div mat-card-avatar class="example-header-image"></div> -->
             <mat-card-title class="card-title">{{section.title}}</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            <mat-card-subtitle *ngIf="section.items; else noItems">Nb item : {{objectKeys(section.items).length}}</mat-card-subtitle>
+            <ng-template #noItems>
+              <mat-card-subtitle >Nb item : 0</mat-card-subtitle>
+            </ng-template>
           </mat-card-header>
           <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
           <mat-card-content>
@@ -16,9 +19,9 @@
               bred for hunting.
             </p> -->
           </mat-card-content>
-          <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
+          <mat-card-actions style="text-align: center;">
+            <!-- <button mat-button>LIKE</button> -->
+            <button mat-button [routerLink]="['/sections/'+[i]]">Accéder</button>
           </mat-card-actions>
         </mat-card>
     </div>

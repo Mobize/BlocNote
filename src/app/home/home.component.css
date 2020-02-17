@@ -1,5 +1,6 @@
 .section-card {
   max-width: 300px;
+  width: 250px;
 }
 
 /* A modifier */
@@ -7,5 +8,5 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100px;
+  width: 215px;
 }

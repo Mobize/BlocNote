@@ -240,3 +240,8 @@ a.mat-line {
   color: #FFC107;
 }
 
+.mat-card-header-text {
+  margin:auto !important;
+  text-align: center;
+}
+

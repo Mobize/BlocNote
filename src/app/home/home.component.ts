@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 
   sectionsSubscription: Subscription;
   sections: Section[];
+  objectKeys = Object.keys;
 
   constructor(private itemService: ItemService) { }
 
