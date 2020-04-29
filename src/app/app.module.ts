@@ -72,7 +72,7 @@ const appRoutes: Routes = [
     MatBadgeModule,
     MatDialogModule,
     MatSnackBarModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes, {useHash: true})
   ],
   entryComponents: [
     ConfirmationDialogComponent,
