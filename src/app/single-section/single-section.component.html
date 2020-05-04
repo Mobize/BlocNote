@@ -1,5 +1,7 @@
 <div class="row row_section">
   <div class="col-md-4" style="margin-left: 30px;">
+    <mat-progress-bar *ngIf="!sectionLoaded" mode="indeterminate" style="width:20%; margin:auto;">
+    </mat-progress-bar>
     <h1 class="section_name" style="font-size: 25px;padding: 0 65px;" *ngIf="section && !editSection">
       {{ section.title }}
     </h1>
@@ -50,7 +52,9 @@
                          let i = index" [label]="code.value.language ? code.value.language : 'Langage'">
                   <div [formGroupName]="i">
                     <input class="form-control language_input" placeholder="Langage" formControlName="language">
-                    <textarea class="form-control script_input code_edit" placeholder="Script" formControlName="script"></textarea>
+                    <!-- <textarea class="form-control script_input code_edit" placeholder="Script" formControlName="script"></textarea> -->
+                    <!-- <angular-editor formControlName="script" [config]="editorConfig"></angular-editor> -->
+                    <textarea [froalaEditor] formControlName="script"></textarea>
                     <button mat-raised-button class="deleteCode_button" type="button" (click)="removeCode(i)" [disabled]="FormData.controls.length === 1">Supprimer</button>
                     <hr>
                   </div>
@@ -67,7 +71,10 @@
         </form>
         <mat-tab-group *ngIf="showCode && itemCode">
           <mat-tab *ngFor="let tab of itemCode; let index = index" [label]="tab.language">
-            <textarea class="code">{{tab.script}}</textarea>
+            <!-- <textarea class="code">{{tab.script}}</textarea> -->
+            <!-- <angular-editor [(ngModel)]="tab.script" [config]="editorConfig">{{tab.script}}</angular-editor> -->
+            <!-- <div id="froala" [froalaEditor] [(ngModel)]="tab.script"></div> -->
+            <div [froalaEditor] [(froalaModel)]="tab.script"></div>
           </mat-tab>
         </mat-tab-group>
     </div>

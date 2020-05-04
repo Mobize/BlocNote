@@ -30,6 +30,13 @@ import {
   SnackBarItemComponent,
   SnackBarSectionComponent
 } from './snack-bar-confirmation/snack-bar-confirmation.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { HttpClientModule} from '@angular/common/http';
+// import 'froala-editor/js/plugins.pkgd.min.js';
+// import 'froala-editor/js/languages/fr.js';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -72,6 +79,11 @@ const appRoutes: Routes = [
     MatBadgeModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    AngularEditorModule,
+    HttpClientModule,
+    FroalaEditorModule.forRoot(), FroalaViewModule.forRoot(),
     RouterModule.forRoot(appRoutes, {useHash: true})
   ],
   entryComponents: [

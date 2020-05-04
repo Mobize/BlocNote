@@ -25,12 +25,10 @@ export class AppComponent {
   }
 
   onClose() {
-    console.log('close')
     this.showHomeIcon = true;
   }
 
   onOpen() {
-    console.log('open')
     this.showHomeIcon = false;
   }
 

@@ -51,6 +51,7 @@ export class ItemService {
       this.sections = data.val() ? data.val() : [];
       this.emitSections();
     });
+    return this.sections;
   }
 
   getItems(id: number) {
@@ -59,6 +60,7 @@ export class ItemService {
       this.items = data.val() ? data.val() : [];
       this.emitItems();
     });
+    return this.items;
   }
 
   getSingleSection(id: number) {

@@ -1,5 +1,7 @@
 <div class="row row_section">
   <div class="col-xs-12 list_section">
+    <mat-progress-bar *ngIf="!sectionsLoaded" mode="indeterminate" style="width:20%; margin:auto;">
+    </mat-progress-bar>
     <mat-nav-list>
       <mat-list-item [routerLink]="['/sections/'+[i]]"
       routerLinkActive="changeColor" id="section_list"

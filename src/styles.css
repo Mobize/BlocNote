@@ -245,3 +245,10 @@ a.mat-line {
   text-align: center;
 }
 
+.fr-element.fr-view > * {
+  white-space: initial !important;
+}
+
+#froala > * {
+  white-space: initial !important;
+}

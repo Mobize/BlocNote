@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from './../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-single-section',
@@ -34,6 +35,53 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   selectedValue = '';
   selected = new FormControl(0);
   codes;
+  sectionLoaded = false;
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+      spellcheck: true,
+      height: 'auto',
+      minHeight: '0',
+      maxHeight: 'auto',
+      width: 'auto',
+      minWidth: '0',
+      translate: 'yes',
+      enableToolbar: true,
+      showToolbar: true,
+      placeholder: 'Enter text here...',
+      defaultParagraphSeparator: '',
+      defaultFontName: '',
+      defaultFontSize: '',
+      fonts: [
+        {class: 'arial', name: 'Arial'},
+        {class: 'times-new-roman', name: 'Times New Roman'},
+        {class: 'calibri', name: 'Calibri'},
+        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      ],
+      customClasses: [
+      {
+        name: 'quote',
+        class: 'quote',
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: 'titleText',
+        class: 'titleText',
+        tag: 'h1',
+      },
+    ],
+    uploadUrl: 'v1/image',
+    uploadWithCredentials: false,
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [
+      ['bold', 'italic'],
+      ['fontSize']
+    ]
+};
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
               private router: Router, public dialog: MatDialog,
@@ -59,6 +107,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
       this.itemService.getSingleSection(+this.sectionId).then(
         (section: Section) => {
           this.section = section;
+          this.sectionLoaded = true;
           this.selectedValue = '';
           this.showForm = false;
           this.editSection = false;

@@ -18,6 +18,7 @@ export class SectionListComponent implements OnInit, OnDestroy {
   sectionsSubscription: Subscription;
   objectKeys = Object.keys;
   selectedValue;
+  sectionsLoaded = false;
 
   constructor(private itemService: ItemService, private router: Router, public dialog: MatDialog,
               private snackBar: SnackBarConfirmationComponent) { }
@@ -27,9 +28,11 @@ export class SectionListComponent implements OnInit, OnDestroy {
     this.sectionsSubscription = this.itemService.sectionSubject.subscribe(
       (section: Section[]) => {
         this.sections = section;
+        this.sectionsLoaded = true;
       }
     );
-    this.itemService.emitSections();
+    // this.itemService.emitSections();
+    this.sections = this.itemService.getSections();
   }
 
   openDialog(section): void {
