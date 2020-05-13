@@ -51,12 +51,12 @@
                 <mat-tab formArrayName="codes" *ngFor="let code of FormData.controls;
                          let i = index" [label]="code.value.language ? code.value.language : 'Langage'">
                   <div [formGroupName]="i">
+                    <ng-template matTabContent>
                     <input class="form-control language_input" placeholder="Langage" formControlName="language">
-                    <!-- <textarea class="form-control script_input code_edit" placeholder="Script" formControlName="script"></textarea> -->
-                    <!-- <angular-editor formControlName="script" [config]="editorConfig"></angular-editor> -->
-                    <textarea [froalaEditor] formControlName="script"></textarea>
+                    <ngx-monaco-editor [options]="editorOptions" formControlName="script"></ngx-monaco-editor>
                     <button mat-raised-button class="deleteCode_button" type="button" (click)="removeCode(i)" [disabled]="FormData.controls.length === 1">Supprimer</button>
                     <hr>
+                  </ng-template>
                   </div>
                 </mat-tab>
               </mat-tab-group>
@@ -71,10 +71,10 @@
         </form>
         <mat-tab-group *ngIf="showCode && itemCode">
           <mat-tab *ngFor="let tab of itemCode; let index = index" [label]="tab.language">
-            <!-- <textarea class="code">{{tab.script}}</textarea> -->
-            <!-- <angular-editor [(ngModel)]="tab.script" [config]="editorConfig">{{tab.script}}</angular-editor> -->
-            <!-- <div id="froala" [froalaEditor] [(ngModel)]="tab.script"></div> -->
-            <div [froalaEditor] [(froalaModel)]="tab.script"></div>
+            <ng-template matTabContent>
+              <!-- <div>{{testArray[index][0].language}}</div> -->
+              <ngx-monaco-editor [options]="testArray[index][0]" [(ngModel)]="tab.script"></ngx-monaco-editor>
+            </ng-template>
           </mat-tab>
         </mat-tab-group>
     </div>

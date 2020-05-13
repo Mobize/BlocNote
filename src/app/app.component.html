@@ -9,8 +9,19 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-icon (click)="sidenav.toggle()" class="open_nav_icon">reorder</mat-icon><br>
-    <a style="position: absolute;" *ngIf="showHomeIcon" class="home-icon" routerLink="/">
+    <div>
+      <button mat-raised-button color="primary" routerLink="auth/signin" *ngIf="!isAuth">Connexion</button>
+      <button mat-raised-button routerLink="auth/signup" *ngIf="!isAuth">Inscription</button>
+      <button mat-raised-button color="accent" *ngIf="isAuth" (click)="onSignOut()">Deconnexion</button>
+      <div *ngIf="isAuth">
+        <div>
+          {{userEmail}}
+        </div>
+      </div>
+    </div>
+    
+    <mat-icon (click)="sidenav.toggle()" class="open_nav_icon" *ngIf="isAuth">reorder</mat-icon><br>
+    <a style="position: absolute;" *ngIf="showHomeIcon && isAuth" class="home-icon" routerLink="/">
       <mat-icon style="font-size:32px;color:black">home</mat-icon>
     </a>
     <router-outlet></router-outlet>

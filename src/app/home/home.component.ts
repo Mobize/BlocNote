@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Section } from '../models/section.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   sections: Section[];
   sectionsLoaded = false;
   objectKeys = Object.keys;
+  userConnected = firebase.auth().currentUser.uid;
+  emailUser = firebase.auth().currentUser.email;
 
   constructor(private itemService: ItemService) { }
 
@@ -29,7 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log(error);
     };
     
-    this.sections = this.itemService.getSections();
+    this.sections = this.itemService.getSections(this.userConnected);
   }
 
   ngOnDestroy() {

@@ -13,9 +13,11 @@ import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
 export class ItemService {
 
   idSection: number;
+  // userConnectedId = firebase.auth().currentUser;
 
   constructor(private route: ActivatedRoute, private router: Router) {
-    this.getSections();
+    // console.log(this.userConnectedId)
+    // this.getSections(this.userConnectedId);
 
     this.router.events
       .pipe(
@@ -41,21 +43,22 @@ export class ItemService {
     this.itemSubject.next(this.items);
   }
 
-  saveSections() {
-    firebase.database().ref('/sections').set(this.sections);
+  saveSections(user) {
+    firebase.database().ref(user + '/sections').set(this.sections);
   }
 
-  getSections() {
-    firebase.database().ref('/sections')
+  getSections(user) {
+    firebase.database().ref(user + '/sections')
     .on('value', (data: DataSnapshot) => {
       this.sections = data.val() ? data.val() : [];
       this.emitSections();
     });
+    
     return this.sections;
   }
 
-  getItems(id: number) {
-    firebase.database().ref('/sections/' + id + '/items')
+  getItems(user,id: number) {
+    firebase.database().ref(user + '/sections/' + id + '/items')
     .on('value', (data: DataSnapshot) => {
       this.items = data.val() ? data.val() : [];
       this.emitItems();
@@ -63,10 +66,10 @@ export class ItemService {
     return this.items;
   }
 
-  getSingleSection(id: number) {
+  getSingleSection(user, id: number) {
     return new Promise(
       (resolve, reject) => {
-        firebase.database().ref('/sections/' + id).once('value').then(
+        firebase.database().ref(user + '/sections/' + id).once('value').then(
           (data: DataSnapshot) => {
             resolve(data.val());
           }, (error) => {
@@ -77,31 +80,31 @@ export class ItemService {
     );
   }
 
-  createNewSection(newSection: Section) {
+  createNewSection(newSection: Section, user) {
     this.sections.push(newSection);
-    this.saveSections();
+    this.saveSections(user);
     this.emitSections();
   }
 
-  createNewItem(newItem: Item, sectionId: number) {
-    firebase.database().ref('/sections/' + sectionId + '/items').push(newItem);
+  createNewItem(user, newItem: Item, sectionId: number) {
+    firebase.database().ref(user + '/sections/' + sectionId + '/items').push(newItem);
     this.emitItems();
   }
 
-  updateItem(item: Item, sectionId: number, key: number) {
-    firebase.database().ref('/sections/' + sectionId + '/items/' + key).update(item);
+  updateItem(user, item: Item, sectionId: number, key: number) {
+    firebase.database().ref(user + '/sections/' + sectionId + '/items/' + key).update(item);
   }
 
-  updateSection(sectionId, section) {
-    firebase.database().ref('/sections/' + sectionId).update(section);
+  updateSection(user, sectionId, section) {
+    firebase.database().ref(user + '/sections/' + sectionId).update(section);
   }
 
-  removeItem(key: number) {
-    const item = firebase.database().ref('sections/' + this.idSection + '/items/' + key);
+  removeItem(user, key: number) {
+    const item = firebase.database().ref(user +'/sections/' + this.idSection + '/items/' + key);
     item.remove();
   }
 
-  removeSection(section: Section) {
+  removeSection(user, section: Section) {
     const sectionIndexToRemove = this.sections.findIndex(
       (sectionEl) => {
         if (sectionEl === section) {
@@ -110,7 +113,7 @@ export class ItemService {
       }
     );
     this.sections.splice(sectionIndexToRemove, 1);
-    this.saveSections();
+    this.saveSections(user);
     this.emitSections();
   }
 }

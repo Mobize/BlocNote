@@ -6,6 +6,7 @@ import { Section } from '../models/section.model';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-section-list',
@@ -19,11 +20,19 @@ export class SectionListComponent implements OnInit, OnDestroy {
   objectKeys = Object.keys;
   selectedValue;
   sectionsLoaded = false;
+  userConected ;
 
   constructor(private itemService: ItemService, private router: Router, public dialog: MatDialog,
-              private snackBar: SnackBarConfirmationComponent) { }
+              private snackBar: SnackBarConfirmationComponent, private authService: AuthService) { }
 
   ngOnInit() {
+
+    this.authService.getCurrentUser().then((user) => {
+      this.userConected = user.uid;
+      this.itemService.emitSections();
+      this.sections = this.itemService.getSections(this.userConected);
+      // console.log(this.sections)
+    })
 
     this.sectionsSubscription = this.itemService.sectionSubject.subscribe(
       (section: Section[]) => {
@@ -32,7 +41,8 @@ export class SectionListComponent implements OnInit, OnDestroy {
       }
     );
     // this.itemService.emitSections();
-    this.sections = this.itemService.getSections();
+    // this.sections = this.itemService.getSections(this.userConected);
+    // console.log(this.sections)
   }
 
   openDialog(section): void {
@@ -51,7 +61,7 @@ export class SectionListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteSection(section: Section) {
-    this.itemService.removeSection(section);
+    this.itemService.removeSection(this.userConected,section);
   }
 
   onViewSection(id: number) {

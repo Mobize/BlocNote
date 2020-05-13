@@ -4,6 +4,7 @@ import { Section } from '../models/section.model';
 import { Item } from '../models/item.model';
 import { ItemService } from '../item.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-item-form',
@@ -15,11 +16,19 @@ export class ItemFormComponent implements OnInit {
   itemForm: FormGroup;
   item: Item;
   itemId: number;
-  // buttonName = '+';
+  userId;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private itemService: ItemService) { }
+  constructor(private route: ActivatedRoute, 
+    private fb: FormBuilder, 
+    private itemService: ItemService, 
+    private authService: AuthService) { }
 
   ngOnInit() {
+    console.log('test')
+
+    this.authService.getCurrentUser().then((user) => {
+      this.userId= user.uid;
+    })
 
     this.initForm();
     this.route.params.subscribe(params => {
@@ -35,10 +44,11 @@ export class ItemFormComponent implements OnInit {
   }
 
   onSaveItem() {
+    console.log(this.userId)
     const title = this.itemForm.get('title').value;
     const code = this.itemForm.get('code').value;
     const newItem = new Item(title, code);
-    this.itemService.createNewItem(newItem, this.itemId);
+    this.itemService.createNewItem(this.userId,newItem, this.itemId);
     this.initForm();
   }
 

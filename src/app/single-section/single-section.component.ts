@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from './../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-single-section',
@@ -36,62 +36,20 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   selected = new FormControl(0);
   codes;
   sectionLoaded = false;
-
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-      spellcheck: true,
-      height: 'auto',
-      minHeight: '0',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-      ],
-      customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    uploadUrl: 'v1/image',
-    uploadWithCredentials: false,
-    sanitize: true,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
-    ]
-};
+  editorOptions = {theme: 'vs-dark', language: 'javascript'};
+  testArray = [];
+  user;
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
               private router: Router, public dialog: MatDialog,
               private snackBar: SnackBarConfirmationComponent,
-              private fb: FormBuilder) {}
+              private fb: FormBuilder,
+              private authService: AuthService) {}
 
   ngOnInit() {
+
     this.initForm();
     this.codes = [];
-    // this.addCodes();
     this.section = new Section('');
     this.itemsSubscription = this.itemService.itemSubject.subscribe(
       (items: Item[]) => {
@@ -103,16 +61,22 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     this.itemService.emitItems();
     this.route.params.subscribe(params => {
       this.sectionId = params.id;
-      this.itemService.getItems(this.sectionId);
-      this.itemService.getSingleSection(+this.sectionId).then(
-        (section: Section) => {
-          this.section = section;
-          this.sectionLoaded = true;
-          this.selectedValue = '';
-          this.showForm = false;
-          this.editSection = false;
-        }
-      );
+      this.authService.getCurrentUser().then((user) => {
+        this.user = user;
+        this.itemService.getItems(this.user.uid,this.sectionId);
+        this.itemService.getSingleSection(this.user.uid,+this.sectionId).then(
+          (section: Section) => {
+            this.section = section;
+            this.sectionLoaded = true;
+            this.selectedValue = '';
+            this.showForm = false;
+            this.editSection = false;
+          }
+        );
+
+      })
+
+      
     });
   }
 
@@ -135,7 +99,8 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   }
 
   saveEditSection(section) {
-    this.itemService.updateSection(this.sectionId, section);
+    console.log(this.user.uid)
+    // this.itemService.updateSection(this.user.id,this.sectionId, section);
     this.editSection = false;
   }
 
@@ -148,10 +113,18 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     const code = this.itemForm.get('codes').value;
     const newItem = new Item(title, code);
 
+    Object(newItem.codes).forEach((code, index) => {
+      if(code.language.toLowerCase().includes('php')) {
+        if (!code.script.includes('<?php')) {
+            code.script = '<?php \n' + code.script;
+        }
+      }
+    })
+
     if (this.editItem) {
-      this.itemService.updateItem(newItem, this.sectionId, this.itemKey);
+      this.itemService.updateItem(this.user.uid, newItem, this.sectionId, this.itemKey);
     } else {
-      this.itemService.createNewItem(newItem, this.sectionId);
+      this.itemService.createNewItem(this.user.uid, newItem, this.sectionId);
     }
     this.initForm();
     this.addCodes();
@@ -168,7 +141,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
       language: ['', Validators.required],
       script: ['', Validators.required],
     }));
-    this.selected.setValue(this.FormData.controls.length - 1);
+    this.selected.setValue(this.FormData.controls.length - 1);    
   }
 
   onEditItem(item) {
@@ -186,7 +159,9 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
       );
     });
     this.FormData.controls.length = item.value.codes.length;
+    
     this.itemForm.get('codes').setValue(item.value.codes);
+
     this.itemKey = item.key;
     this.showCode = false;
     this.showTitle = false;
@@ -211,6 +186,15 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     this.showCode = true;
     this.itemTitle = item.value.title;
     this.itemCode = item.value.codes;
+
+    // Configuration du language de programmation affiché (en fonction du language saisi)
+    Object.keys(item.value.codes).forEach((key, index) => {
+      if (item.value.codes[key].language.toLowerCase().includes('php')) {
+        this.testArray.splice(index,1,[{'theme': 'vs-dark', 'language' :  'php'}]);
+      } else {
+        this.testArray.splice(index,1,[{'theme': 'vs-dark', 'language' :  item.value.codes[key].language.toLowerCase()}]);
+      }
+    })
   }
 
 
@@ -230,7 +214,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   }
 
   onDeleteItem(key: number) {
-    this.itemService.removeItem(key);
+    this.itemService.removeItem(this.user.uid,key);
     this.showForm = false;
   }
 
@@ -242,5 +226,5 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     this.itemsSubscription.unsubscribe();
 
   }
-
+  
 }

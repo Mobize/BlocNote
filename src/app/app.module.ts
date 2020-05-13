@@ -37,15 +37,24 @@ import { HttpClientModule} from '@angular/common/http';
 // import 'froala-editor/js/plugins.pkgd.min.js';
 // import 'froala-editor/js/languages/fr.js';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { SignupComponent } from './auth/signup/signup.component';
+import { SigninComponent } from './auth/signin/signin.component';
+import { AuthService } from './services/auth.service';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const appRoutes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', canActivate: [AuthGuardService], component: HomeComponent},
+  {path: 'auth/signup', component: SignupComponent},
+  {path: 'auth/signin', component: SigninComponent},
   {path: 'cmd', component: CmdComponent},
   {path: 'form', component: FormComponent},
-  {path: 'add-section', component: SectionFormComponent},
-  {path: 'sections/:id', component: SingleSectionComponent},
-  {path: 'sections/edit/:id', component: EditSectionComponent}
+  {path: 'add-section', canActivate: [AuthGuardService], component: SectionFormComponent},
+  {path: 'sections/:id', canActivate: [AuthGuardService], component: SingleSectionComponent},
+  {path: 'sections/edit/:id',canActivate: [AuthGuardService], component: EditSectionComponent},
+  {path: '**', redirectTo: ''},
 ];
+
 
 @NgModule({
   declarations: [
@@ -63,6 +72,8 @@ const appRoutes: Routes = [
     SnackBarConfirmationComponent,
     SnackBarItemComponent,
     SnackBarSectionComponent,
+    SignupComponent,
+    SigninComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +94,7 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     AngularEditorModule,
     HttpClientModule,
+    MonacoEditorModule.forRoot(),
     FroalaEditorModule.forRoot(), FroalaViewModule.forRoot(),
     RouterModule.forRoot(appRoutes, {useHash: true})
   ],
@@ -92,7 +104,7 @@ const appRoutes: Routes = [
     SnackBarItemComponent,
     SnackBarSectionComponent
   ],
-  providers: [SnackBarConfirmationComponent, ItemFormComponent],
+  providers: [AuthService, AuthGuardService, SnackBarConfirmationComponent, ItemFormComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
