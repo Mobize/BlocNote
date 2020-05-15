@@ -1,23 +1,27 @@
  <mat-sidenav-container class="main_container">
   <mat-sidenav class="sidenav_container" #sidenav mode="side" [(opened)]="opened" (closed)="onClose()" (opened)="onOpen()">
-    <h2 class="h2"><a routerLink="/" class="link_h2"><mat-icon class="dashboard_icon">dashboard</mat-icon>Bloc Note</a></h2>
+    <h2 class="h2"><a routerLink="/" class="link_h2"><mat-icon class="dashboard_icon">dashboard</mat-icon>Code Note</a></h2>
     <!-- <hr style="width:58%;background:#6bb2ff; margin-bottom: 5px;margin-top: 5px;"> -->
     <div class="add_section_button">
-      <button mat-raised-button routerLink="add-section"><mat-icon>add</mat-icon></button>
+      <button mat-raised-button routerLink="add-section">Ajouter Section<mat-icon>add</mat-icon></button>
     </div>
+    <div style="text-align: center;margin-top: 10px;">{{userFirstName}}
+      {{userLastName}}</div>
+      <div style="text-align: center;">Email : {{userEmail}}</div>
     <app-section-list></app-section-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div>
-      <button mat-raised-button color="primary" routerLink="auth/signin" *ngIf="!isAuth">Connexion</button>
+    <!-- <div *ngIf="user">Vous devez valider votre compte via l'email envoyé pour vous authentifier via Google</div> -->
+    <!-- Boutons de choix : connexion / inscription-->
+    <!-- <div class="new_user_google" *ngIf="newGoogleUser">Vous devez créer un compte avant de vous connecter via Google</div> -->
+    <div class="connect_choices">
+      <button class="connect_page_button" mat-raised-button color="primary" routerLink="auth/signin" *ngIf="!isAuth">Connexion</button>
       <button mat-raised-button routerLink="auth/signup" *ngIf="!isAuth">Inscription</button>
-      <button mat-raised-button color="accent" *ngIf="isAuth" (click)="onSignOut()">Deconnexion</button>
       <div *ngIf="isAuth">
-        <div>
-          {{userEmail}}
-        </div>
+        <img *ngIf="userPhotoUrl" class="photoGoogle" src="{{userPhotoUrl}}">
       </div>
+      <button mat-raised-button color="accent" *ngIf="isAuth" (click)="onSignOut()">Deconnexion</button>
     </div>
     
     <mat-icon (click)="sidenav.toggle()" class="open_nav_icon" *ngIf="isAuth">reorder</mat-icon><br>

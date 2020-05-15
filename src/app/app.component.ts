@@ -3,6 +3,8 @@ import * as firebase from 'firebase';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { ItemService } from './item.service';
+import { Subscription } from 'rxjs';
+import DataSnapshot = firebase.database.DataSnapshot;
 
 @Component({
   selector: 'app-root',
@@ -12,9 +14,16 @@ import { ItemService } from './item.service';
 export class AppComponent implements OnInit {
   opened = false;
   showHomeIcon = false;
-  isAuth: boolean;
+  isAuth = false;
+  user;
   userId;
   userEmail;
+  userFirstName;
+  userLastName;
+  userPhotoUrl: string;
+  userSubscription: Subscription;
+  newGoogleUser: boolean;
+  isVerifiedAccount: boolean;
 
   constructor(private authService: AuthService, private router: Router, private itemService: ItemService) {
     const config = {
@@ -31,21 +40,61 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getCurrentUser().then((user) => {
 
-    });
-
+    // Données Authentification FIrebase
     firebase.auth().onAuthStateChanged(
       (user) => {
         if(user) {
+          this.user = user;
+          console.log(user)
+          this.userPhotoUrl = user.photoURL;
           this.isAuth = true;
-          this.userId = user.uid;
-          this.userEmail= user.email;
-          this.opened= true;
+          this.opened = true;
+          if(this.authService.isNewUser && this.authService.IsGoogleNew) {
+            // console.log('google et nouveau');
+            this.newGoogleUser = true;
+            // this.authService.signOutUser();
+            this.opened= false;
+            this.isAuth = false;
+          } 
+
           
+      // this.authService.getCurrentUser().then((user) => {
+        // this.itemService.getUserBdd(this.user.uid);
+        // })
+    
+        // // Données bdd Firebase
+        this.userSubscription = this.itemService.userSubject.subscribe(
+          (user: any) => {
+            this.userFirstName = user.firstname;
+            this.userLastName = user.lastname;
+            // console.log(user)
+          }
+        );
+  
+          // else {
+
+          //   firebase.database().ref(user.uid + '/infos')
+          //   .on('value', (data: DataSnapshot) => {
+          //     const userFirebase = data.val() ? data.val() : [];
+          //     console.log(userFirebase)
+          //     if(userFirebase.emailVerified === 'false') {
+          //         console.log('emailVerified false')
+          //         this.isAuth = false;
+          //         this.opened = false;
+          //     } else {
+          //         console.log('emailverified true')
+          //         this.opened = true
+          //         this.isAuth = true;
+          //     }
+          //   });
+            
+          //   this.userId = user.uid;
+            this.userEmail= user.email;
+          // }
         } else {
-          this.isAuth = false;         
-          this.opened = false; 
+          this.isAuth = false;
+          this.opened = false;
         }
       }
     )

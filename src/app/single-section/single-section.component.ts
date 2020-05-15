@@ -99,8 +99,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   }
 
   saveEditSection(section) {
-    console.log(this.user.uid)
-    // this.itemService.updateSection(this.user.id,this.sectionId, section);
+    this.itemService.updateSection(this.user.uid,this.sectionId, section);
     this.editSection = false;
   }
 

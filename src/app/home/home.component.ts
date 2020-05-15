@@ -16,12 +16,47 @@ export class HomeComponent implements OnInit, OnDestroy {
   sections: Section[];
   sectionsLoaded = false;
   objectKeys = Object.keys;
+  user = firebase.auth().currentUser;
   userConnected = firebase.auth().currentUser.uid;
   emailUser = firebase.auth().currentUser.email;
+  userVerificationEmail= firebase.auth().currentUser.emailVerified;
+  userSubscription: Subscription;
+  userDisplayName : string;
 
   constructor(private itemService: ItemService) { }
 
   ngOnInit() {
+
+    // console.log(this.user);
+    const email = this.getEmailProvider(this.emailUser);
+
+    if(this.userVerificationEmail && email === 'gmail.com') {
+      var userData = {
+        'isgooglemail': 'true',
+        'verifiedEmail': 'true',
+        'emailUser' : this.emailUser
+      }
+      localStorage.setItem('userInfos', JSON.stringify(userData))
+    } else if(this.userVerificationEmail && email !== 'gmail.com'){
+      var userDataOther = {
+        'isgooglemail': 'false',
+        'verifiedEmail': 'true',
+        'emailUser' : this.emailUser
+      }
+      localStorage.setItem('userInfos', JSON.stringify(userDataOther))
+    }
+
+        // Données bdd Firebase
+    this.userSubscription = this.itemService.userSubject.subscribe(
+      (user: any) => {
+        // this.userFirstName = user.firstname;
+        // this.userLastName = user.lastname;
+        this.userDisplayName = user.firstname;
+        console.log(user)
+      }
+    );
+
+    this.itemService.getUserBdd(this.userConnected)
     
     this.sectionsSubscription = this.itemService.sectionSubject.subscribe(
       (section: Section[]) => {
@@ -37,6 +72,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.itemService.sectionSubject.closed;
+  }
+
+  getEmailProvider(email) {
+    return email.split('@')[1];
   }
 
 }

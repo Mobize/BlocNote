@@ -31,7 +31,6 @@ export class SectionListComponent implements OnInit, OnDestroy {
       this.userConected = user.uid;
       this.itemService.emitSections();
       this.sections = this.itemService.getSections(this.userConected);
-      // console.log(this.sections)
     })
 
     this.sectionsSubscription = this.itemService.sectionSubject.subscribe(

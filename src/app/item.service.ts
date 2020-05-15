@@ -34,6 +34,8 @@ export class ItemService {
   items: Item[] = [];
   sectionSubject = new Subject<Section[]>();
   itemSubject = new Subject<Item[]>();
+  user;
+  userSubject = new Subject<any>();
 
   emitSections() {
     this.sectionSubject.next(this.sections);
@@ -41,6 +43,41 @@ export class ItemService {
 
   emitItems() {
     this.itemSubject.next(this.items);
+  }
+
+  emitUser() {
+    this.userSubject.next(this.user)
+  }
+
+  saveUserBdd(user,firstname?: string, lastname?: string, displayName?: string, photoUrl?: string) {
+    if(displayName === undefined) {
+      firebase.database().ref(user + '/infos').set(
+        {
+          // 'emailVerified': verifiedEmail,
+          'firstname': firstname, 
+          'lastname': lastname
+        }
+      );
+    } else {
+      firebase.database().ref(user + '/infos').update(
+        {
+          // 'emailVerified': verifiedEmail,
+          'displayname': displayName, 
+          'photourl': photoUrl
+        }
+      );
+    }
+  }
+
+  getUserBdd(user) {
+    firebase.database().ref(user + '/infos')
+    .on('value', (data: DataSnapshot) => {
+      this.user = data.val() ? data.val() : [];
+      // console.log(this.user);
+      this.emitUser();
+    });
+    return this.user; 
+
   }
 
   saveSections(user) {

@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { ItemService } from '../item.service';
+import DataSnapshot = firebase.database.DataSnapshot;
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private itemService: ItemService) { }
+  isNewUser;
+  isGoogleAuth;
+  IsGoogleNew: boolean;
+  isAuth : boolean;
+  opened: boolean;
+  isVerifiedAccount: boolean;
+
+  constructor(private itemService: ItemService, private router: Router) { }
 
   getCurrentUser() {
     return new Promise<any>((resolve, reject) => {
@@ -24,8 +33,12 @@ export class AuthService {
       (resolve, reject) => {
         firebase.auth().createUserWithEmailAndPassword(email, password).then(
           () => {
+            var user = firebase.auth().currentUser;
+            var actionCodeSettings = {
+              url: 'http://localhost:4200/#/?email=' + firebase.auth().currentUser.email,
+            };
+            user.sendEmailVerification(actionCodeSettings);
             resolve();
-            console.log(firebase.auth().currentUser.uid)
           },
           (error) => {
             reject(error);
@@ -41,8 +54,6 @@ export class AuthService {
         firebase.auth().signInWithEmailAndPassword(email, password).then(
           () => {
             resolve();
-            const userId = firebase.auth().currentUser.uid;
-            // localStorage.setItem('user', userId)
           },
           (error) => {
             reject(error);
@@ -52,8 +63,47 @@ export class AuthService {
     );
   }
 
+  async signInGoogle() {
+
+    await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).then((user) => {
+      const newUser = firebase.auth().currentUser;
+
+      // Empechement d'acceder à l'application via Google avec un nouveau compte
+      this.isNewUser = user.additionalUserInfo.isNewUser;
+      this.isGoogleAuth = user.additionalUserInfo.providerId;
+      if (this.isNewUser === true && this.isGoogleAuth === "google.com") {
+        this.IsGoogleNew = true;
+        this.signOutUser()
+        newUser.delete()
+    } else {
+      this.IsGoogleNew = false;
+    }
+      
+      // const userId = newUser.uid;
+
+      // firebase.database().ref(userId + '/infos')
+      // .on('value', (data: DataSnapshot) => {
+      //   const userFirebase = data.val() ? data.val() : [];
+      //   // console.log(userFirebase);
+      //   if(userFirebase.emailVerified === false) {
+      //     // console.log('email non verifié bdd')
+      //     // this.IsGoogleNew = true;
+      //     this.isAuth = false;
+      //     this.opened= false;
+      //     this.isVerifiedAccount = false;
+      //     this.signOutUser();
+      //   } else {
+      //     this.isVerifiedAccount = true;
+      //     this.isAuth = false;
+      //     this.opened= false;
+      //   }
+      // });
+
+
+    })
+  }
+
   signOutUser() {
     firebase.auth().signOut();
-    localStorage.removeItem('user');
   }
 }

@@ -9,6 +9,11 @@ body { margin: 0; font-family: 'Raleway', sans-serif; }
   margin-bottom: 0px;
 }
 
+.homeBrand {
+  margin-bottom: 30px;
+  font-size: 2.5em;
+}
+
 .mb5 {
   margin-bottom: 5px;
 }
@@ -83,7 +88,10 @@ a:hover {
 
 .main_container {
   height: 100%;
-  background-color: #eee;
+  /* background-color: #eee; */
+  background-color: #cbd9e2;
+  /* background-image: url(assets/fond_saas.jpg); */
+  background-size: cover;
 }
 .sidenav_container {
   background-color: white;
@@ -251,4 +259,12 @@ a.mat-line {
 
 #froala > * {
   white-space: initial !important;
+}
+
+mat-sidenav-content.mat-drawer-content.mat-sidenav-content {
+  /* overflow: hidden; */
+}
+
+mat-card.mat-card {
+  font-family: 'Raleway', sans-serif;
 }

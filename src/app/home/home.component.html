@@ -1,4 +1,5 @@
-<h1 style="text-align: center; margin-bottom: 25px;">Welcome Home! (Version Dev)</h1>
+<h1 style="text-align: center; margin-bottom: 25px;">Bienvenue {{userDisplayName}} (Version Dev)</h1>
+<div style="text-align: center;margin-bottom: 30px" *ngIf="!userVerificationEmail">Merci de cliquer sur le lien dans l'email que vous venez de recevoir afin de valider votre compte</div>
 <!-- <mat-spinner *ngIf="!sectionsLoaded"></mat-spinner> -->
 
 <mat-progress-bar *ngIf="!sectionsLoaded" mode="indeterminate" style="width:20%; margin:auto;">

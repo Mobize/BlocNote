@@ -34,14 +34,13 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule} from '@angular/common/http';
-// import 'froala-editor/js/plugins.pkgd.min.js';
-// import 'froala-editor/js/languages/fr.js';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { ItemService } from './item.service';
 
 const appRoutes: Routes = [
   {path: '', canActivate: [AuthGuardService], component: HomeComponent},
@@ -104,7 +103,7 @@ const appRoutes: Routes = [
     SnackBarItemComponent,
     SnackBarSectionComponent
   ],
-  providers: [AuthService, AuthGuardService, SnackBarConfirmationComponent, ItemFormComponent],
+  providers: [AuthService, AuthGuardService, ItemService, SnackBarConfirmationComponent, ItemFormComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
