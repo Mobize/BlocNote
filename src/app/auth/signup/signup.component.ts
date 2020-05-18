@@ -22,10 +22,11 @@ export class SignupComponent implements OnInit {
     private itemService: ItemService) { }
 
   ngOnInit() {
-    // this.authService.getCurrentUser().then((user)=> {
-    //   this.newUserID = user.uid;
-      
-    // })
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user) {
+        this.router.navigate(['/']);
+      }
+    })
     this.initForm();
   }
 

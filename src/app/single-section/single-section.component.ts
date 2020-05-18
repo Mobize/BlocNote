@@ -61,12 +61,17 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     this.itemService.emitItems();
     this.route.params.subscribe(params => {
       this.sectionId = params.id;
+      // console.log(this.sectionId)
       this.authService.getCurrentUser().then((user) => {
         this.user = user;
         this.itemService.getItems(this.user.uid,this.sectionId);
         this.itemService.getSingleSection(this.user.uid,+this.sectionId).then(
           (section: Section) => {
+            
             this.section = section;
+            if(this.section == null) {
+              this.router.navigate(['/'])
+            }
             this.sectionLoaded = true;
             this.selectedValue = '';
             this.showForm = false;

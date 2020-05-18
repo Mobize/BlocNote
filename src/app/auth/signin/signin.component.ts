@@ -28,6 +28,13 @@ export class SigninComponent implements OnInit {
     private appComponent: AppComponent) { }
 
   ngOnInit() {
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user) {
+        this.router.navigate(['/']);
+      }
+    })
+
     if (this.userInfos) {
       const emailVerified = JSON.parse(this.userInfos).verifiedEmail;
       const googleEmail = JSON.parse(this.userInfos).isgooglemail;

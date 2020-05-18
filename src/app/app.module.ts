@@ -53,7 +53,7 @@ const appRoutes: Routes = [
   {path: 'add-section', canActivate: [AuthGuardService], component: SectionFormComponent},
   {path: 'sections/:id', canActivate: [AuthGuardService], component: SingleSectionComponent},
   {path: 'sections/edit/:id',canActivate: [AuthGuardService], component: EditSectionComponent},
-  {path: '**', redirectTo: ''},
+  {path: '**', redirectTo: '/'},
 ];
 
 const monacoConfig: NgxMonacoEditorConfig = {
