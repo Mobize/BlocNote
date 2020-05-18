@@ -34,13 +34,15 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule} from '@angular/common/http';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
+// import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ItemService } from './item.service';
+// import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment.prod';
 
 const appRoutes: Routes = [
   {path: '', canActivate: [AuthGuardService], component: HomeComponent},
@@ -53,6 +55,12 @@ const appRoutes: Routes = [
   {path: 'sections/edit/:id',canActivate: [AuthGuardService], component: EditSectionComponent},
   {path: '**', redirectTo: ''},
 ];
+
+const monacoConfig: NgxMonacoEditorConfig = {
+  baseUrl: environment.production == true ? './assets' : '', // configure base path for monaco editor default: './assets'
+  defaultOptions: { scrollBeyondLastLine: false }, // pass default options to be used
+  // onMonacoLoad: () => { console.log((<any>window).monaco); } // here monaco object will be available as window.monaco use this function to extend monaco editor functionalities.
+};
 
 
 @NgModule({
@@ -93,8 +101,8 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     AngularEditorModule,
     HttpClientModule,
-    MonacoEditorModule.forRoot(),
-    FroalaEditorModule.forRoot(), FroalaViewModule.forRoot(),
+    MonacoEditorModule.forRoot(monacoConfig),
+    // FroalaEditorModule.forRoot(), FroalaViewModule.forRoot(),
     RouterModule.forRoot(appRoutes, {useHash: true})
   ],
   entryComponents: [

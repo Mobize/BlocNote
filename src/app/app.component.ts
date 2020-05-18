@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
       (user) => {
         if(user) {
           this.user = user;
-          console.log(user)
+          // console.log(user)
           this.userPhotoUrl = user.photoURL;
           this.isAuth = true;
           this.opened = true;

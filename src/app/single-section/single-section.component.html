@@ -6,7 +6,7 @@
       {{ section.title }}
     </h1>
     <mat-icon *ngIf="!editSection" id="edit_item"
-    (click)="onEditSection(section)">edit
+    (click)="onEditSection()">edit
     </mat-icon>
     <div class="edit_section" *ngIf="editSection">
     <div class="section_title_edit">Édition de la Section : {{section.title}}</div>

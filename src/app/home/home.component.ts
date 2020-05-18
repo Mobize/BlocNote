@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         // this.userFirstName = user.firstname;
         // this.userLastName = user.lastname;
         this.userDisplayName = user.firstname;
-        console.log(user)
+        // console.log(user)
       }
     );
 
