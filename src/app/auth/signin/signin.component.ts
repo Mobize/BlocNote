@@ -29,11 +29,11 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
 
-    firebase.auth().onAuthStateChanged((user) => {
-      if(user) {
-        this.router.navigate(['/']);
-      }
-    })
+    
+    console.log(firebase.auth().currentUser);
+    if(firebase.auth().currentUser !== null) {
+      this.router.navigate(['/']);
+    }
 
     if (this.userInfos) {
       const emailVerified = JSON.parse(this.userInfos).verifiedEmail;
@@ -41,7 +41,6 @@ export class SigninComponent implements OnInit {
       if(emailVerified === 'true' && googleEmail === 'true') {
         this.showGoogleButton = true;
       }
-      // console.log(JSON.parse(this.userInfos).verifiedEmail)
     }
     
     this.initForm();
@@ -56,19 +55,14 @@ export class SigninComponent implements OnInit {
 
   google() {
     this.authService.signInGoogle().then(()=> {
-      
-      // if(this.authService.isAuth) {
-      //   this.notVerifiedAccount = false;
           this.authService.getCurrentUser().then((user)=> {
           if(user.emailVerified) {
             this.itemService.saveUserBdd(user.uid,'','', user.displayName, user.photoURL);
             this.router.navigate(['/']);
           }
         })
-      // } 
 
       if (this.authService.isNewUser && this.authService.IsGoogleNew) {
-        // console.log('nouveau et google signin')
         this.newGoogleAcount = true;
       } else {
         this.newGoogleAcount = false;
