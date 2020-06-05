@@ -29,9 +29,7 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
 
-    
-    console.log(firebase.auth().currentUser);
-    if(firebase.auth().currentUser !== null) {
+        if(firebase.auth().currentUser !== null) {
       this.router.navigate(['/']);
     }
 

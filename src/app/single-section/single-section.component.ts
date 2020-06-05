@@ -39,6 +39,8 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   editorOptions = {theme: 'vs-dark', language: 'javascript'};
   testArray = [];
   user;
+  filteredItems: any[];
+  itemTitles;
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
               private router: Router, public dialog: MatDialog,
@@ -53,7 +55,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     this.section = new Section('');
     this.itemsSubscription = this.itemService.itemSubject.subscribe(
       (items: Item[]) => {
-        this.items = items;
+        this.filteredItems = this.items = items;
         this.itemTitle = '';
         this.itemCode = '';
       }
@@ -80,9 +82,16 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
         );
 
       })
-
-      
     });
+  }
+
+  filter(query: string) {
+    for (const key in this.items) {
+      this.itemTitles = this.items[key].title;
+      this.filteredItems = (query) ? 
+      Object.values(this.items).filter(p=>p.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(query.toLowerCase())) :
+      this.items;
+    }
   }
 
   initForm() {

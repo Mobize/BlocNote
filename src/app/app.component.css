@@ -16,6 +16,13 @@
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
 }
 
+.section_text {
+  text-align: center;
+    /* font-weight: bold; */
+    background: aliceblue;
+    margin-top: 10px;
+}
+
 .connect_choices {
   display: flex;
   justify-content: flex-end;
@@ -54,8 +61,10 @@
 }
 
 .add_section_button button{
-  width: 90%;
+  /* width: 90%; */
   margin: 10px 0px;
+  color: white;
+    background: #ff4081;
 }
 
 .new_user_google {

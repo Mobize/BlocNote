@@ -148,12 +148,12 @@ button:focus {
   outline: none !important;
 }
 
-.mat-fab, .mat-flat-button, .mat-mini-fab, .mat-raised-button {
+/* .mat-fab, .mat-flat-button, .mat-mini-fab, .mat-raised-button { */
   /* background-color: #007bff94;
   color: white; */
-  background-color: white;
-  color: #007bff94;
-}
+  /* background-color: white;
+  color: #007bff94; */
+/* } */
 
 .mat-badge-content {
   /* background: #d907ff8a; */
@@ -267,4 +267,12 @@ mat-sidenav-content.mat-drawer-content.mat-sidenav-content {
 
 mat-card.mat-card {
   font-family: 'Raleway', sans-serif;
+}
+
+.mat-tab-body.mat-tab-body-active {
+  /* overflow-y: hidden !important; */
+}
+
+.mat-tab-body-content {
+  overflow: hidden !important;
 }
