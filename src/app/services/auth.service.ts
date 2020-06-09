@@ -35,7 +35,7 @@ export class AuthService {
           () => {
             var user = firebase.auth().currentUser;
             var actionCodeSettings = {
-              url: 'http://localhost:4200/#/?email=' + firebase.auth().currentUser.email,
+              url: 'https://oliviercharpentier.fr/blocnote/?email=' + firebase.auth().currentUser.email,
             };
             user.sendEmailVerification(actionCodeSettings);
             resolve();

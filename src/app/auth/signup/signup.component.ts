@@ -15,6 +15,7 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   errorMessage: string;
   newUserID;
+  error_password: boolean;
 
   constructor(private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -35,7 +36,8 @@ export class SignupComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       firstName: [''],
       lastName: [''],
-      password: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)]]
+      password: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)]],
+      password_confirm: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)]]
     });
   }
 
@@ -44,23 +46,32 @@ export class SignupComponent implements OnInit {
     const firstName = this.signupForm.get('firstName').value;
     const lastName = this.signupForm.get('lastName').value;
     const password = this.signupForm.get('password').value;
+    const password_confirm = this.signupForm.get('password_confirm').value;
     this.authService.IsGoogleNew = false;
-    
-    this.authService.createNewUser(email, password).then(
-      () => {
-        this.router.navigate(['/']);
-        const newUserID = firebase.auth().currentUser.uid;
-        this.itemService.saveUserBdd(newUserID, firstName, lastName);
-        var userData = {
-          'verifiedEmail': 'false',
-          'emailUser' : email
+
+    // Verification des mots de passes identiques
+    if(password === password_confirm) {
+      this.error_password= false;
+      this.authService.createNewUser(email, password).then(
+        () => {
+          this.router.navigate(['/']);
+          const newUserID = firebase.auth().currentUser.uid;
+          this.itemService.saveUserBdd(newUserID, firstName, lastName);
+          var userData = {
+            'verifiedEmail': 'false',
+            'emailUser' : email
+          }
+          localStorage.setItem('userInfos', JSON.stringify(userData))
+        },
+        (error) => {
+          this.errorMessage = error;
         }
-        localStorage.setItem('userInfos', JSON.stringify(userData))
-      },
-      (error) => {
-        this.errorMessage = error;
-      }
-    );
+      );
+    } else {
+      this.error_password= true;
+    }
+    
+
   }
 
 }

@@ -32,6 +32,13 @@
                  class="form-control"
                  formControlName="password">
         </div>
+        <div class="form-group">
+          <label for="password">Confirmation du mot de passe</label>
+          <input type="password"
+                 id="password_confirm"
+                 class="form-control"
+                 formControlName="password_confirm">
+        </div>
         <div class="button_connect_group">
           <!-- Connexion Google -->
           <!-- <button type="button" mat-raised-button (click)="google()">
@@ -56,6 +63,9 @@
         
       </form>
       <p class="text-danger">{{ errorMessage }}</p>
+      <div *ngIf="error_password">
+        <p class="text-danger">Les mots de passe ne sont pas identiques</p>
+      </div>
     </mat-card>
     </div>
   </div>
