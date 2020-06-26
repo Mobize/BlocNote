@@ -46,10 +46,18 @@ export class AppComponent implements OnInit {
       (user) => {
         if(user) {
           this.user = user;
-          // console.log(user)
+          this.itemService.getUserBdd(user.uid);
           this.userPhotoUrl = user.photoURL;
           this.isAuth = true;
           this.opened = true;
+
+          // Données bdd Firebase
+          this.userSubscription = this.itemService.userSubject.subscribe(
+            (user: any) => {
+              this.userFirstName = user.firstname;
+              this.userLastName = user.lastname;
+            }
+          );
           if(this.authService.isNewUser && this.authService.IsGoogleNew) {
             // console.log('google et nouveau');
             this.newGoogleUser = true;
@@ -57,41 +65,7 @@ export class AppComponent implements OnInit {
             this.opened= false;
             this.isAuth = false;
           } 
-
-          
-      // this.authService.getCurrentUser().then((user) => {
-        // this.itemService.getUserBdd(this.user.uid);
-        // })
-    
-        // // Données bdd Firebase
-        this.userSubscription = this.itemService.userSubject.subscribe(
-          (user: any) => {
-            this.userFirstName = user.firstname;
-            this.userLastName = user.lastname;
-            // console.log(user)
-          }
-        );
-  
-          // else {
-
-          //   firebase.database().ref(user.uid + '/infos')
-          //   .on('value', (data: DataSnapshot) => {
-          //     const userFirebase = data.val() ? data.val() : [];
-          //     console.log(userFirebase)
-          //     if(userFirebase.emailVerified === 'false') {
-          //         console.log('emailVerified false')
-          //         this.isAuth = false;
-          //         this.opened = false;
-          //     } else {
-          //         console.log('emailverified true')
-          //         this.opened = true
-          //         this.isAuth = true;
-          //     }
-          //   });
-            
-          //   this.userId = user.uid;
             this.userEmail= user.email;
-          // }
         } else {
           this.isAuth = false;
           this.opened = false;

@@ -5,8 +5,14 @@
     <div class="add_section_button">
       <button mat-raised-button routerLink="add-section">Ajout Section<mat-icon>add</mat-icon></button>
     </div>
-    <div style="text-align: center;margin-top: 10px;">{{userFirstName}}
-      {{userLastName}}</div>
+    <div *ngIf="userFirstName && userLastName" style="text-align: center;margin-top: 10px;">
+      {{userFirstName}}
+      {{userLastName}}
+    </div>
+    <div *ngIf="!userFirstName && !userLastName">    
+      <mat-progress-bar  mode="indeterminate" style="width:20%; margin:auto;">
+      </mat-progress-bar>
+    </div>
       <div style="text-align: center;">Email : {{userEmail}}</div>
       <!-- <hr style="background-color: #6bb2ff;"> -->
       <!-- <div class="section_text">*</div> -->

@@ -30,6 +30,7 @@
     <mat-list-item id="item_list" *ngFor="let item of filteredItems | keyvalue ; let i = index" [class.changeColor]="item.key == selectedValue">
       <a (click)="openItem(item, item.key)" *ngIf="item.value.title" matLine><mat-icon [class.yellow]="item.key == selectedValue">code</mat-icon>{{item.value.title}}</a>
       <button mat-icon-button>
+        <!-- {{log(item)}} -->
         <mat-icon id="edit_item_icon" (click)="onEditItem(item)">edit</mat-icon>
         <mat-icon (click)="openDialog(item.key, item.value.title)">delete_sweep</mat-icon>
      </button>

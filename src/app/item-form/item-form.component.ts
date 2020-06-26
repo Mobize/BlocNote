@@ -43,13 +43,13 @@ export class ItemFormComponent implements OnInit {
     });
   }
 
-  onSaveItem() {
-    console.log(this.userId)
-    const title = this.itemForm.get('title').value;
-    const code = this.itemForm.get('code').value;
-    const newItem = new Item(title, code);
-    this.itemService.createNewItem(this.userId,newItem, this.itemId);
-    this.initForm();
-  }
+  // onSaveItem() {
+  //   console.log(this.userId)
+  //   const title = this.itemForm.get('title').value;
+  //   const code = this.itemForm.get('code').value;
+  //   const newItem = new Item(title, code);
+  //   this.itemService.createNewItem(this.userId,newItem, this.itemId);
+  //   this.initForm();
+  // }
 
 }

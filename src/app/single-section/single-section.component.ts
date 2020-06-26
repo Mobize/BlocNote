@@ -87,9 +87,10 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
 
   filter(query: string) {
     for (const key in this.items) {
-      this.itemTitles = this.items[key].title;
+      // this.itemTitles = this.items[key].title;
       this.filteredItems = (query) ? 
-      Object.values(this.items).filter(p=>p.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(query.toLowerCase())) :
+      Object.values(this.items).filter(p=>p.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase().includes(query.toLowerCase())) :
       this.items;
     }
   }
@@ -157,7 +158,12 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     this.selected.setValue(this.FormData.controls.length - 1);    
   }
 
+  log(val) {
+    console.log(val);
+  }
+
   onEditItem(item) {
+    console.log(item)
     this.selectedValue = item.key;
     this.editItem = true;
     this.itemMode = 'Modification d\'un Item';
