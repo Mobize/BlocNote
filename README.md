@@ -1,5 +1,5 @@
 # BlocNote 
-A simple note manager (bdd => Firebase) 
+A note manager for developpers (bdd => Firebase) 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.6.
 
