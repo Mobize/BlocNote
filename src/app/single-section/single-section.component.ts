@@ -86,13 +86,10 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   }
 
   filter(query: string) {
-    for (const key in this.items) {
-      // this.itemTitles = this.items[key].title;
       this.filteredItems = (query) ? 
       Object.values(this.items).filter(p=>p.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .toLowerCase().includes(query.toLowerCase())) :
       this.items;
-    }
   }
 
   initForm() {
