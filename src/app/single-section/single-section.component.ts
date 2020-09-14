@@ -1,6 +1,6 @@
 import { SnackBarConfirmationComponent } from './../snack-bar-confirmation/snack-bar-confirmation.component';
 import { Item } from './../models/item.model';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { ItemService } from '../item.service';
 import { Section } from '../models/section.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,8 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./single-section.component.css']
 })
 export class SingleSectionComponent implements OnInit, OnDestroy {
+
+  @ViewChild('query', { static: true }) input: ElementRef;
 
   section: Section;
   editSection = false;
@@ -39,14 +41,15 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   editorOptions = {theme: 'vs-dark', language: 'javascript'};
   testArray = [];
   user;
-  filteredItems: any[];
+  filteredItems: Object;
   itemTitles;
 
   constructor(private route: ActivatedRoute, private itemService: ItemService,
               private router: Router, public dialog: MatDialog,
               private snackBar: SnackBarConfirmationComponent,
               private fb: FormBuilder,
-              private authService: AuthService) {}
+              private authService: AuthService,
+              private ngZone: NgZone) {}
 
   ngOnInit() {
 
@@ -63,16 +66,15 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     this.itemService.emitItems();
     this.route.params.subscribe(params => {
       this.sectionId = params.id;
-      // console.log(this.sectionId)
       this.authService.getCurrentUser().then((user) => {
         this.user = user;
-        this.itemService.getItems(this.user.uid,this.sectionId);
-        this.itemService.getSingleSection(this.user.uid,+this.sectionId).then(
+        this.itemService.getItems(this.user.uid, this.sectionId);
+        this.itemService.getSingleSection(this.user.uid, +this.sectionId).then(
           (section: Section) => {
-            
+
             this.section = section;
-            if(this.section == null) {
-              this.router.navigate(['/'])
+            if (this.section == null) {
+              this.router.navigate(['/']);
             }
             this.sectionLoaded = true;
             this.selectedValue = '';
@@ -81,16 +83,28 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
           }
         );
 
-      })
+      });
     });
   }
 
   filter(query: string) {
-      this.filteredItems = (query) ? 
-      Object.values(this.items).filter(p=>p.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase().includes(query.toLowerCase())) :
-      this.items;
-  }
+    const result: object = {};
+
+    // tslint:disable-next-line: forin
+    for (const  key in this.items) {
+      const data = this.items[key];
+
+      if (this.items.hasOwnProperty(key) && data.title &&
+        data.title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+        .indexOf(query.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()) !== -1) {
+        result[key] = data;
+      }
+    }
+
+    this.ngZone.run(() => {
+      this.filteredItems = Object.keys(result).length ? result : '';
+    });
+}
 
   initForm() {
     this.itemForm = this.fb.group({
@@ -111,7 +125,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   }
 
   saveEditSection(section) {
-    this.itemService.updateSection(this.user.uid,this.sectionId, section);
+    this.itemService.updateSection(this.user.uid, this.sectionId, section);
     this.editSection = false;
   }
 
@@ -125,15 +139,16 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     const newItem = new Item(title, code);
 
     Object(newItem.codes).forEach((code, index) => {
-      if(code.language.toLowerCase().includes('php')) {
+      if (code.language.toLowerCase().includes('php')) {
         if (!code.script.includes('<?php')) {
             code.script = '<?php \n' + code.script;
         }
       }
-    })
+    });
 
     if (this.editItem) {
       this.itemService.updateItem(this.user.uid, newItem, this.sectionId, this.itemKey);
+      // this.input.nativeElement.value = '';
     } else {
       this.itemService.createNewItem(this.user.uid, newItem, this.sectionId);
     }
@@ -152,7 +167,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
       language: ['', Validators.required],
       script: ['', Validators.required],
     }));
-    this.selected.setValue(this.FormData.controls.length - 1);    
+    this.selected.setValue(this.FormData.controls.length - 1);
   }
 
   log(val) {
@@ -160,7 +175,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   }
 
   onEditItem(item) {
-    console.log(item)
+    console.log(item);
     this.selectedValue = item.key;
     this.editItem = true;
     this.itemMode = 'Modification d\'un Item';
@@ -175,7 +190,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
       );
     });
     this.FormData.controls.length = item.value.codes.length;
-    
+
     this.itemForm.get('codes').setValue(item.value.codes);
 
     this.itemKey = item.key;
@@ -206,11 +221,11 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
     // Configuration du language de programmation affiché (en fonction du language saisi)
     Object.keys(item.value.codes).forEach((key, index) => {
       if (item.value.codes[key].language.toLowerCase().includes('php')) {
-        this.testArray.splice(index,1,[{'theme': 'vs-dark', 'language' :  'php'}]);
+        this.testArray.splice(index, 1, [{theme: 'vs-dark', language :  'php'}]);
       } else {
-        this.testArray.splice(index,1,[{'theme': 'vs-dark', 'language' :  item.value.codes[key].language.toLowerCase()}]);
+        this.testArray.splice(index, 1, [{theme: 'vs-dark', language :  item.value.codes[key].language.toLowerCase()}]);
       }
-    })
+    });
   }
 
 
@@ -230,7 +245,7 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
   }
 
   onDeleteItem(key: number) {
-    this.itemService.removeItem(this.user.uid,key);
+    this.itemService.removeItem(this.user.uid, key);
     this.showForm = false;
   }
 
@@ -240,7 +255,6 @@ export class SingleSectionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.itemsSubscription.unsubscribe();
-
   }
-  
+
 }
