@@ -89,8 +89,8 @@ a:hover {
 .main_container {
   height: 100%;
   /* background-color: #eee; */
-  background-color: #cbd9e2;
-  /* background-image: url(assets/fond_saas.jpg); */
+  /* background-color: #cbd9e2; */
+  background-image: url(assets/fond_saas.jpg);
   background-size: cover;
 }
 .sidenav_container {
