@@ -92,3 +92,15 @@
 .monaco_editor {
   height: 500px;
 }
+
+.monaco-fixed {
+  margin-top:-44px;
+  position:fixed;
+  left: calc(295px + 500px + 40px);
+  right: 20px;
+  transition: left 0.1s ease;
+}
+
+.monaco-fixed.menu-ferme {
+    left: calc(600px + 40px);
+}
